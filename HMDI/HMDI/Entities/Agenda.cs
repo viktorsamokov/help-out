@@ -26,7 +26,7 @@ namespace HMDI.Entities
         public DateTime DateCreated { get; set; }
 
         [ForeignKey("User")]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [ForeignKey("AgendaCategory")]
         public int AgendaCategoryId { get; set; }

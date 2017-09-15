@@ -15,7 +15,7 @@ namespace HMDI.Entities
     public int AgendaId { get; set; }
 
     [ForeignKey("User")]
-    public int UserID { get; set; }
+    public string UserID { get; set; }
 
     public virtual Agenda Agenda { get; set; }
 

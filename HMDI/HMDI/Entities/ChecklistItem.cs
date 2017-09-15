@@ -16,7 +16,7 @@ namespace HMDI.Entities
     public DateTime? CheckedAt { get; set; }
 
     [ForeignKey("Checklist")]
-    public string ChecklistId { get; set; }
+    public int ChecklistId { get; set; }
 
     public virtual Checklist Checklist { get; set; }
 

@@ -10,9 +10,19 @@ namespace HMDI.Data
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+        public DbSet<AgendaCategory> AgendaCategories { get; set; }
+        public DbSet<Agenda> Agendas { get; set; }
+        public DbSet<AgendaItem> AgendaItems { get; set; }
+        public DbSet<Checklist> Checklists { get; set; }
+        public DbSet<ChecklistItem> ChecklistItems { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
+        public DbSet<Review> Reviews { get; set; }
+        
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+          
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
