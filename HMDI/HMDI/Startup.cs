@@ -11,6 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using HMDI.Data;
 using AutoMapper;
 using HMDI.Helpers;
+using HMDI.Services;
+using HMDI.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Routing;
+using Newtonsoft.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace HMDI
 {
@@ -33,13 +41,39 @@ namespace HMDI
         {
             // Add framework services.
             services.AddCors();
+
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddMvc();
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+
+            services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IUrlHelper>(x =>
+            {
+                var actionContext = x.GetService<IActionContextAccessor>().ActionContext;
+                return new UrlHelper(actionContext);
+            });
+
+            services.AddMvc().AddJsonOptions(options => {
+              options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+              options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
+
             services.AddAutoMapper();
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            
+            // DI for application services
+            services.AddScoped<IApplicationUserService, ApplicationUserService>();
+            services.AddScoped<IAgendaCategoryService, AgendaCategoryService>();
+            services.AddScoped<IAgendaItemService, AgendaItemService>();
+            services.AddScoped<IAgendaService, AgendaService>();
+            services.AddScoped<IChecklistItemService, ChecklistItemService>();
+            services.AddScoped<IChecklistService, ChecklistService>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<IReviewService, ReviewService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

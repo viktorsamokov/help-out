@@ -7,23 +7,17 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace HMDI.Controllers
 {
   [Route("api/[controller]")]
   public class AgendasController : Controller
   {
-    private readonly UserManager<ApplicationUser> _userManager;
     private IAgendaService _agendaService;
 
-    public AgendasController(UserManager<ApplicationUser> userManager, IAgendaService agendaSevice)
+    public AgendasController(IAgendaService agendaSevice)
     {
-      _userManager = userManager;
       _agendaService = agendaSevice;
     }
-
-    /// var user = await _userManager.GetUserAsync(HttpContext.User);  
 
     // GET: api/agendas
     [HttpGet]
