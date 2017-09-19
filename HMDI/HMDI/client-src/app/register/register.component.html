@@ -1,0 +1,58 @@
+
+<!--Modal: Register Form-->
+<div mdbModal #registerForm="mdb-modal" class="modal fade" id="modalRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Header-->
+            <div class="modal-header light-blue darken-3 white-text">
+                <h4 class="title"><i class="fa fa-user-plus"></i> Register</h4>
+                <button type="button" class="close waves-effect waves-light" data-dismiss="modal" aria-label="Close" (click)="registerForm.hide()">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <!--Body-->
+            <div class="modal-body">
+                
+                <form #form="ngForm" (ngSubmit)="register(form.value)">
+                    <div class="md-form form-sm">
+                        <i class="fa fa-user prefix"></i>
+                        <input mdbActive type="text" [(ngModel)]="registerVm.FirstName" name="FirstName" class="form-control" required> 
+                        <label for="firstName">First Name</label>   
+                    </div>
+                    <div class="md-form form-sm">
+                        <i class="fa fa-user-o prefix"></i>
+                        <input mdbActive [(ngModel)]="registerVm.LastName" name="LastName" type="text" id="lastName" class="form-control" required>
+                        <label for="lastName">Last Name</label>
+                    </div>
+                    <div class="md-form form-sm">
+                        <i class="fa fa-envelope prefix"></i>
+                        <input mdbActive [(ngModel)]="registerVm.Email" name="Email" type="text" id="email" class="form-control" required>
+                        <label for="email">Your email</label>
+                    </div>
+
+                    <div class="md-form form-sm">
+                        <i class="fa fa-lock prefix"></i>
+                        <input mdbActive  [(ngModel)]="registerVm.Password" name="Password" type="password" id="password" class="form-control" required>
+                        <label for="password">Your password</label>
+                    </div>
+
+                    <div class="text-center mt-2">
+                        <button class="btn btn-info waves-light" type="submit" mdbRippleRadius>Sign up <i class="fa fa-sign-in ml-1"></i></button>
+                    </div>
+                </form>
+
+            </div>
+            <!--Footer-->
+            <div class="modal-footer">
+                <div class="options text-center text-md-right mt-1">
+                    
+                </div>
+                <button type="button" class="btn btn-outline-info ml-auto" data-dismiss="modal" (click)="registerForm.hide()" mdbRippleRadius>Close</button>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: Register Form-->
