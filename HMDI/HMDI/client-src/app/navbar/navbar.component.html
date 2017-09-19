@@ -1,0 +1,36 @@
+<!--Navbar-->
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark blue darken-3">
+           
+    <!-- Navbar brand -->
+    <logo><a class="navbar-brand" href="#">Navbar</a></logo>
+
+    <!-- Collapsible content -->
+    <links>
+
+        <!-- Links -->
+        <ul class="navbar-nav mr-auto">
+
+        </ul>
+        <!-- Links -->
+
+        <!-- Search form -->
+        <form class="form-inline waves-light" mdbRippleRadius>
+            <ul class="navbar-nav">
+                <li class="nav-item active">
+                    <a class="nav-link waves-light" mdbRippleRadius>Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-light"  (click)="openLoginModal()" mdbRippleRadius>Login</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link waves-light" (click)="openRegisterModal()" mdbRippleRadius>Sign up</a>
+                </li>
+            </ul>
+        </form>
+    </links>
+    <!-- Collapsible content -->
+
+</mdb-navbar>
+<!--/.Navbar-->
+<app-login #loginModal></app-login>
+<app-register #registerModal></app-register>
