@@ -1,25 +1,31 @@
-﻿using HMDI.Dtos;
+﻿using AutoMapper;
+using HMDI.Dtos;
 using HMDI.Entities;
 using HMDI.Helpers;
 using HMDI.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HMDI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   public class UsersController : Controller
   {
     private IApplicationUserService _userService;
+    private IMapper _mapper;
 
-    public UsersController(IApplicationUserService userService)
+    public UsersController(IApplicationUserService userService, IMapper mapper)
     {
       _userService = userService;
+      _mapper = mapper;
     }
 
 
@@ -47,7 +53,7 @@ namespace HMDI.Controllers
     // POST api/users
     [AllowAnonymous]
     [HttpPost]
-    public async Task<IActionResult> PostUser([FromBody]RegisterDto entity)
+    public async Task<IActionResult> PostUser([FromBody] RegisterDto entity)
     {
       if (!ModelState.IsValid)
       {
@@ -57,6 +63,42 @@ namespace HMDI.Controllers
       ApplicationUser user = await _userService.Create(entity);
 
       return Ok(user);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("authenticate")]
+    public async Task<IActionResult> Authenticate([FromBody] LoginDto model)
+    {
+      if (!ModelState.IsValid)
+      {
+        return BadRequest();
+      }
+
+      var user = await _userService.FindUserByEmail(model);
+
+      if(user == null)
+      {
+        return BadRequest();
+      }
+
+      PasswordVerificationResult result = _userService.VerifyHashedPassword(user, model.Password);
+
+      if(result != PasswordVerificationResult.Success)
+      {
+        return BadRequest();
+      }
+      
+      JwtSecurityToken token = await _userService.GetJwtSecurityToken(user);
+
+      LoggedInUser loggedInUser = _mapper.Map<LoggedInUser>(user);
+
+      return Ok(new
+      {
+        token = new JwtSecurityTokenHandler().WriteToken(token),
+        expiration = token.ValidTo,
+        user = loggedInUser
+      });
+
     }
 
     // PUT api/users/5

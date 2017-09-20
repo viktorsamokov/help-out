@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule } from "@angular/forms";
 import { RegisterService } from './register/register.service';
+import { AuthenticationService } from './shared/authentication.service';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,6 @@ import { RegisterService } from './register/register.service';
   ],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [AuthGuardService, RegisterService]
+  providers: [AuthGuardService, RegisterService, AuthenticationService]
 })
 export class AppModule { }

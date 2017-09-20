@@ -9,6 +9,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.Extensions.Options;
 
 namespace HMDI.Services
 {
@@ -19,6 +24,9 @@ namespace HMDI.Services
     void Update(string id, ApplicationUser entity);
     ApplicationUser Delete(string id);
     bool ApplicationUserExists(string id);
+    Task<ApplicationUser> FindUserByEmail(LoginDto model);
+    PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string password);
+    Task<JwtSecurityToken> GetJwtSecurityToken(ApplicationUser user);
   }
 
   public class ApplicationUserService : IApplicationUserService
@@ -26,12 +34,17 @@ namespace HMDI.Services
     private readonly ApplicationDbContext _db;
     private UserManager<ApplicationUser> _userManager;
     private IUrlHelper _urlHelper;
+    private IPasswordHasher<ApplicationUser> _passwordHasher;
+    private IOptions<AppSettings> _appSettings;
 
-    public ApplicationUserService(ApplicationDbContext db, UserManager<ApplicationUser> userManager, IUrlHelper urlHelper)
+    public ApplicationUserService(ApplicationDbContext db, UserManager<ApplicationUser> userManager, 
+      IUrlHelper urlHelper, IPasswordHasher<ApplicationUser> passwordHasher, IOptions<AppSettings> appSettings)
     {
       _db = db;
       _userManager = userManager;
       _urlHelper = urlHelper;
+      _passwordHasher = passwordHasher;
+      _appSettings = appSettings;
     }
 
     public bool ApplicationUserExists(string id)
@@ -80,9 +93,29 @@ namespace HMDI.Services
       throw new NotImplementedException();
     }
 
+    public async Task<ApplicationUser> FindUserByEmail(LoginDto model)
+    {
+      ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
+
+      return user;
+    }
+
     public ApplicationUser GetById(string id)
     {
       return _db.Users.Include(u => u.AgendaCategories).Where(u => u.Id == id).FirstOrDefault();
+    }
+
+    public async Task<JwtSecurityToken> GetJwtSecurityToken(ApplicationUser user)
+    {
+      IList<Claim> userClaims = await _userManager.GetClaimsAsync(user);
+ 
+      return new JwtSecurityToken(
+          issuer: _appSettings.Value.SiteUrl,
+          audience: _appSettings.Value.SiteUrl,
+          claims: GetTokenClaims(user).Union(userClaims),
+          expires: DateTime.UtcNow.AddDays(10),
+          signingCredentials: new SigningCredentials(new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_appSettings.Value.SecretKey)), SecurityAlgorithms.HmacSha256)
+      );
     }
 
     public void Update(string id, ApplicationUser entity)
@@ -95,5 +128,21 @@ namespace HMDI.Services
       _db.Entry(user).State = EntityState.Modified;
       _db.SaveChanges();
     }
+
+    public PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string password)
+    {
+      return _passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password);
+    }
+
+    #region getTokenClaims
+    private static IEnumerable<Claim> GetTokenClaims(ApplicationUser user)
+      {
+        return new List<Claim>
+        {
+          new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+          new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
+        };
+      }
+    #endregion
   }
 }

@@ -19,6 +19,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace HMDI
 {
@@ -90,6 +92,20 @@ namespace HMDI
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());
+
+            app.UseJwtBearerAuthentication(new JwtBearerOptions
+            {
+                AutomaticAuthenticate = true,
+                AutomaticChallenge = true,
+                TokenValidationParameters = new TokenValidationParameters
+                {
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration.GetSection("AppSettings:SecretKey").Value)),
+                    ValidIssuer = Configuration.GetSection("AppSettings:SiteUrl").Value,
+                    ValidAudience = Configuration.GetSection("AppSettings:SiteUrl").Value,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true
+                }
+            });
 
             app.UseMvc();
         }
