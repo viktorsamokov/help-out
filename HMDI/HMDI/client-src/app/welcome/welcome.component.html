@@ -1,28 +1,87 @@
 <!--Intro Section-->
-        <section class="view intro-2 hm-gradient">
-            <div class="full-bg-img">
-                <div class="container flex-center">
-                    <div class="row flex-center pt-5 mt-3">
-                        <div class="col-md-6 text-center text-md-left margins">
-                            <div class="white-text">
-                                <h1 class="h1-responsive wow fadeInLeft" data-wow-delay="0.3s">Make purchases with our app </h1>
-                                    <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s">
-                                    <h6 class="wow fadeInLeft" data-wow-delay="0.3s">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem repellendus quasi fuga nesciunt dolorum nulla magnam veniam sapiente, fugiat! Commodi sequi non animi ea dolor molestiae iste.</h6>
-                                    <br>
-                                    <a class="btn btn-outline-white wow fadeInLeft" data-wow-delay="0.3s">Learn more</a>
-                                    <a class="btn btn-outline-white wow fadeInLeft" data-wow-delay="0.3s">Download 
-                                        <i class="fa fa-android left right" aria-hidden="true"></i>
-                                        <i class="fa fa-apple left" aria-hidden="true"></i>
-                                        <i class="fa fa-windows" aria-hidden="true"></i>
-                                    </a>
-                            </div>
-                        </div>
-                        
-                        <div class="col-md-6 wow fadeInRight d-flex justify-content-center" data-wow-delay="0.3s">
-                            <img src="https://mdbootstrap.com/img/Mockups/Transparent/Small/iphone-admin.png" alt="" class="img-responsive">
-                        </div>
+<section class="view intro-2 hm-gradient">
+    <div class="full-bg-img">
+        <div class="container flex-center">
+            <div class="row flex-center pt-5 mt-3">
+                <div class="col-md-6 text-center text-md-left margins">
+                    <div>
+                        <h1 class="h1-responsive wow fadeInLeft" data-wow-delay="0.3s">Make purchases with our app </h1>
+                        <hr class="hr-light wow fadeInLeft" data-wow-delay="0.3s">
+                        <h6 class="wow fadeInLeft" data-wow-delay="0.3s">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem repellendus quasi fuga nesciunt dolorum
+                            nulla magnam veniam sapiente, fugiat! Commodi sequi non animi ea dolor molestiae iste.</h6>
+                        <br>
+                        <a mdbRippleRadius (click)="openRegisterModal()" class="btn btn-outline-black waves-light wow fadeInLeft" data-wow-delay="0.3s">GET STARTED IT'S FREE</a>
+
                     </div>
                 </div>
-            </div>
-        </section>
 
+                <div class="col-md-6 wow fadeInRight d-flex justify-content-center" data-wow-delay="0.3s">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container mt-5">
+
+    <!--Section: Best Features-->
+    <section id="best-features" class="text-center">
+
+        <!-- Heading -->
+        <h2 class="mb-4 font-weight-bold">Best Features</h2>
+
+        <!--Grid row-->
+        <div class="row d-flex justify-content-center mb-4">
+
+            <!--Grid column-->
+            <div class="col-md-8">
+
+                <!-- Description -->
+                <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi voluptate hic provident nulla repellat facere
+                    esse molestiae ipsa labore porro minima quam quaerat rem, natus repudiandae debitis est sit pariatur.</p>
+
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+        <!--Grid row-->
+        <div class="row">
+
+            <!--Grid column-->
+            <div class="col-md-4 mb-5">
+                <i class="fa fa-camera-retro fa-4x orange-text"></i>
+                <h4 class="my-4 font-weight-bold">Experience</h4>
+                <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima assumenda
+                    deleniti hic.</p>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-4 mb-1">
+                <i class="fa fa-heart fa-4x orange-text"></i>
+                <h4 class="my-4 font-weight-bold">Happiness</h4>
+                <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima assumenda
+                    deleniti hic.</p>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-md-4 mb-1">
+                <i class="fa fa-bicycle fa-4x orange-text"></i>
+                <h4 class="my-4 font-weight-bold">Adventure</h4>
+                <p class="grey-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima assumenda
+                    deleniti hic.</p>
+            </div>
+            <!--Grid column-->
+
+        </div>
+        <!--Grid row-->
+
+    </section>
+    <!--Section: Best Features-->
+
+</div>
+
+<app-register #registerModal></app-register>

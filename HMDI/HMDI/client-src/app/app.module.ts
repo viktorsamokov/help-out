@@ -16,6 +16,8 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule } from "@angular/forms";
 import { RegisterService } from './register/register.service';
 import { AuthenticationService } from './shared/authentication.service';
+import { UserAdminComponent } from './user-admin/user-admin.component';
+import { UserPublicComponent } from './user-public/user-public.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,9 @@ import { AuthenticationService } from './shared/authentication.service';
     NavbarComponent,
     FooterComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    UserAdminComponent,
+    UserPublicComponent
   ],
   imports: [
     FormsModule,

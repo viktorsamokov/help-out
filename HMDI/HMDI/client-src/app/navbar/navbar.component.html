@@ -1,5 +1,5 @@
 <!--Navbar-->
-<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark blue darken-3">
+<mdb-navbar SideClass="navbar navbar-expand-lg navbar-dark fixed-top scrolling-navbar dark-purple">
            
     <!-- Navbar brand -->
     <logo><a class="navbar-brand" href="#">Navbar</a></logo>
@@ -16,8 +16,11 @@
         <!-- Search form -->
         <form class="form-inline waves-light" mdbRippleRadius>
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link waves-light" *ngIf="currentUser" mdbRippleRadius>Home<span class="sr-only">(current)</span></a>
+                <li class="nav-item" routerLinkActive="active">
+                    <a routerLink="/main" class="nav-link waves-light" *ngIf="currentUser" mdbRippleRadius>Home<span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item" routerLinkActive="active">
+                    <a routerLink="/admin" class="nav-link waves-light" *ngIf="currentUser" mdbRippleRadius>My profile<span class="sr-only">(current)</span></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link waves-light" *ngIf="currentUser" (click)="logout()" mdbRippleRadius>Logout</a>

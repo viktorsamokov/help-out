@@ -7,7 +7,10 @@ import { RegisterService } from "./register.service";
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
-  styles:['.modal-content {width: 400px !important}']
+  styles:[`
+    .modal-content {width: 400px !important ;}
+    .modal-dialog {margin-top: 8% !important ;}    
+    `]
 })  
 export class RegisterComponent implements OnInit {
   @ViewChild('registerForm') public registerForm: ModalDirective;

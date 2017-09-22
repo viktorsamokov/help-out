@@ -1,1 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
+@import "node_modules/angular-bootstrap-md/scss/bootstrap/functions";
+@import "node_modules/angular-bootstrap-md/scss/bootstrap/variables";
+@import "node_modules/angular-bootstrap-md/scss/mdb/free/data/prefixer";
+@import "node_modules/angular-bootstrap-md/scss/mdb/free/data/mixins";
+@import "node_modules/angular-bootstrap-md/scss/mdb/free/data/colors";
+@import "node_modules/angular-bootstrap-md/scss/mdb/free/data/variables";
+@import "./app/tabs";
+
+body {
+    padding-top: 65px;
+}
+
+.dark-purple {
+    background-color: #3b295a !important;
+}
+
+.dark-purple-1 {
+    background-color: #2f2148 !important;
+}
+
+.light-purple-2 {
+    background-color: #805787 !important;
+}
+
+.lighten-purple {
+    background-color: #644c8e  !important;
+}
+
+.light-purple {
+    background-color: #880e4f !important; 
+}
+
+.light-purple-1 {
+    background-color: #b1246f !important; 
+}
+
+.btn-outline-light-purple {
+    border: 2px solid #644c8e !important;
+    color: #644c8e !important;
+    background-color: transparent;
+}
+
