@@ -18,6 +18,9 @@ import { RegisterService } from './register/register.service';
 import { AuthenticationService } from './shared/authentication.service';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { UserPublicComponent } from './user-public/user-public.component';
+import { UserAgendaComponent } from './user-admin/user-agenda/user-agenda.component';
+import { FavoritesComponent } from './user-admin/favorites/favorites.component';
+import { PlannerComponent } from './user-admin/planner/planner.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +32,10 @@ import { UserPublicComponent } from './user-public/user-public.component';
     LoginComponent,
     RegisterComponent,
     UserAdminComponent,
-    UserPublicComponent
+    UserPublicComponent,
+    UserAgendaComponent,
+    FavoritesComponent,
+    PlannerComponent
   ],
   imports: [
     FormsModule,

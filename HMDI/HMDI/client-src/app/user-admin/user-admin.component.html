@@ -5,24 +5,21 @@
       <section>
         <ul class="nav nav-tabs light-purple-2 nav-justified">
           <li class="nav-item text-white">
-            <a class="nav-link active" data-toggle="tab" role="tab">Agendas</a>
+            <a class="nav-link" [routerLink]="['./agendas']" routerLinkActive="active" data-toggle="tab" role="tab">My Agendas</a>
           </li>
           <li class="nav-item text-white">
-            <a class="nav-link" data-toggle="tab" role="tab">Checklists</a>
+            <a class="nav-link" [routerLink]="['./planner']" routerLinkActive="active" data-toggle="tab" role="tab">My Checklist</a>
           </li>
           <li class="nav-item text-white">
-            <a class="nav-link" data-toggle="tab" role="tab">Favorites</a>
+            <a class="nav-link" [routerLink]="['./favorites']" routerLinkActive="active" data-toggle="tab" role="tab">Favorites</a>
           </li>
         </ul>
         <div class="tab-content card">
-          <!--Panel 1-->
-          <div class="tab-pane fade in show active" id="panel1" role="tabpanel">
-            <br>
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis
-              molestiae placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate
-              odit minima.</p>
+          <!--Panels-->
+          <div class="tab-pane fade show in active" id="panel1" role="tabpanel">
+            <router-outlet></router-outlet>
           </div>
-          <!--/.Panel 1-->
+          <!--/.Panels-->
         </div>
       </section>
     </div>
