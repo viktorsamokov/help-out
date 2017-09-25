@@ -1,6 +1,39 @@
-<div>
-    <br>
-  <p>1. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis molestiae
-    placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate odit minima.</p>
+<div class="row h-100">
+  <div class="col-lg-4 br-1">
+    <p class="h6">Categories</p>
+    <ul class="list-group">
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" routerLink="/admin/agendas/category/{{category.id}}" *ngFor="let category of agendaCategories" class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="pointer-cursor w-100" (click)="openCategory(category)">{{category.categoryName}}</div>
+        <div>
+          <span class="badge pointer-cursor display-inline badge-primary badge-pill">{{category.agendasCount}}</span>
+          <span (click)="deleteCategory(category.id)" class="red-text pointer-cursor display-none pointer-cursor">
+            <i class="fa fa-close"></i>
+          </span>
+        </div>
+      </li>
+    </ul>
+    <div class="row" [hidden]="!isCategoryFormOpen">
+      <div class="no-margin md-form col-md-9 form-sm">
+        <input type="text" id="category" placeholder="Category name" [(ngModel)]="categoryName" class="form-control">
+      </div>
+      <div class="mt-4" >
+        <span (click)="saveCategory()" class="green-text pointer-cursor">
+          <i class="fa fa-check"></i>
+        </span>
+        <span (click)="closeCategoryForm()" class="red-text pointer-cursor">
+          <i class="fa fa-close"></i>
+        </span>
+      </div>
+    </div>
 
+    <div (click)="openCategoryForm()" class="float-right blue-text pointer-cursor mt-2">
+      <span>
+        <i class="fa fa-plus"></i> Add Category
+      </span>
+    </div>
+  </div>
+  <div class="col-lg-8">
+    <p class="h5 text-center"><u>{{openedCategoryName}}</u></p>
+    <router-outlet></router-outlet>
+  </div>
 </div>

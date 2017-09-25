@@ -1,0 +1,33 @@
+.list-group-item {
+    border: none !important;
+    padding: 0.35rem 1.25rem !important;
+}
+
+.list-group-item:hover {
+    background-color: #d0d1d2;
+    color: black;
+}
+
+.list-group-item:hover .display-none{
+    display: inline-block !important;
+}
+
+.list-group-item:hover .display-inline{
+    display: none !important;
+}
+
+.display-none {
+    display: none;
+}
+
+.pointer-cursor {
+    cursor: pointer;
+}
+
+.no-margin {
+    margin: 0 !important;
+}
+
+.br-1 {
+    border-right: 1px solid grey;
+}

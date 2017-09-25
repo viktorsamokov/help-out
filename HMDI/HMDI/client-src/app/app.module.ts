@@ -21,6 +21,10 @@ import { UserPublicComponent } from './user-public/user-public.component';
 import { UserAgendaComponent } from './user-admin/user-agenda/user-agenda.component';
 import { FavoritesComponent } from './user-admin/favorites/favorites.component';
 import { PlannerComponent } from './user-admin/planner/planner.component';
+import { UserAgendaService } from './user-admin/user-agenda/user-agenda.service';
+import { PlannerService } from './user-admin/planner/planner.service';
+import { FavoritesService } from './user-admin/favorites/favorites.service';
+import { CategoryAgendasComponent } from './user-admin/user-agenda/category-agendas/category-agendas.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,8 @@ import { PlannerComponent } from './user-admin/planner/planner.component';
     UserPublicComponent,
     UserAgendaComponent,
     FavoritesComponent,
-    PlannerComponent
+    PlannerComponent,
+    CategoryAgendasComponent
   ],
   imports: [
     FormsModule,
@@ -46,6 +51,13 @@ import { PlannerComponent } from './user-admin/planner/planner.component';
   ],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ],
-  providers: [AuthGuardService, RegisterService, AuthenticationService]
+  providers: [
+    AuthGuardService, 
+    RegisterService, 
+    AuthenticationService, 
+    UserAgendaService, 
+    PlannerService,
+    FavoritesService
+    ]
 })
 export class AppModule { }

@@ -1,27 +1,27 @@
-<div class="container">
+﻿<div class="container">
   <div class="row mt-4">
     
-    <div class="col-lg-11">
+    <div class="col-lg-12">
       <section>
-        <ul class="nav nav-tabs light-purple-2 nav-justified">
+        <ul class="nav nav-tabs  light-purple-2 nav-justified">
           <li class="nav-item text-white">
-            <a class="nav-link" [routerLink]="['./agendas']" routerLinkActive="active" data-toggle="tab" role="tab">My Agendas</a>
+            <a class="nav-link d-block" mdbRippleRadius [routerLink]="['./agendas']" routerLinkActive="active" data-toggle="tab" role="tab">My Agendas</a>
           </li>
           <li class="nav-item text-white">
-            <a class="nav-link" [routerLink]="['./planner']" routerLinkActive="active" data-toggle="tab" role="tab">My Checklist</a>
+            <a class="nav-link d-block" mdbRippleRadius [routerLink]="['./planner']" routerLinkActive="active" data-toggle="tab" role="tab">My Checklist</a>
           </li>
           <li class="nav-item text-white">
-            <a class="nav-link" [routerLink]="['./favorites']" routerLinkActive="active" data-toggle="tab" role="tab">Favorites</a>
+            <a class="nav-link d-block" mdbRippleRadius [routerLink]="['./favorites']" routerLinkActive="active" data-toggle="tab" role="tab">Favorites</a>
           </li>
         </ul>
-        <div class="tab-content card">
+      </section>
+      <div class="tab-content mb-5 h-100 card row">
           <!--Panels-->
-          <div class="tab-pane fade show in active" id="panel1" role="tabpanel">
+          <div class="tab-pane fade show in col-md-12 active" id="panel1" role="tabpanel">
             <router-outlet></router-outlet>
           </div>
           <!--/.Panels-->
-        </div>
-      </section>
+      </div>
     </div>
   </div>
 </div>
