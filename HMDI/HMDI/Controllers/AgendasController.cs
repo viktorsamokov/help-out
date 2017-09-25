@@ -1,6 +1,9 @@
-﻿using HMDI.Entities;
+﻿using AutoMapper;
+using HMDI.Dtos;
+using HMDI.Entities;
 using HMDI.Helpers;
 using HMDI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,14 +12,17 @@ using System.Linq;
 
 namespace HMDI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   public class AgendasController : Controller
   {
     private IAgendaService _agendaService;
+    private IMapper _mapper;
 
-    public AgendasController(IAgendaService agendaSevice)
+    public AgendasController(IAgendaService agendaSevice, IMapper mapper)
     {
       _agendaService = agendaSevice;
+      _mapper = mapper;
     }
 
     // GET: api/agendas
@@ -39,6 +45,22 @@ namespace HMDI.Controllers
       }
 
       return Ok(agenda);
+    }
+
+    // GET api/agendas/category/5
+    [HttpGet("category")]
+    public IActionResult GetAgendasForCategory([FromQuery]int id)
+    {
+      IEnumerable<Agenda> agendas = _agendaService.GetAgendasForCategory(id);
+
+      IEnumerable<AgendaDto> agendasDto = _mapper.Map<IEnumerable<AgendaDto>>(agendas);
+
+      if(agendasDto == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(agendasDto);
     }
         
     // POST api/agendas

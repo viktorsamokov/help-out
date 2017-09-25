@@ -3,6 +3,7 @@ using HMDI.Entities;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace HMDI.Services
 {
@@ -14,6 +15,7 @@ namespace HMDI.Services
     void Update(int id, Agenda agenda);
     Agenda Delete(int id);
     bool AgendaExists(int id);
+    IEnumerable<Agenda> GetAgendasForCategory(int id);
   }
 
   public class AgendaService : IAgendaService
@@ -51,6 +53,13 @@ namespace HMDI.Services
       _db.SaveChanges();
       
       return agenda;
+    }
+
+    public IEnumerable<Agenda> GetAgendasForCategory(int id)
+    {
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Where(a => a.AgendaCategoryId == id).ToList();
+
+      return agendas;
     }
 
     public IEnumerable<Agenda> GetAll()

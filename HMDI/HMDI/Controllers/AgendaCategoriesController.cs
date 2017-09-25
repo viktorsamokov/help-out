@@ -1,33 +1,50 @@
-﻿using HMDI.Entities;
+﻿using AutoMapper;
+using HMDI.Dtos;
+using HMDI.Entities;
 using HMDI.Helpers;
 using HMDI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace HMDI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   public class AgendaCategoriesController : Controller
   {
     private readonly UserManager<ApplicationUser> _userManager;
     private IAgendaCategoryService _agendaCategoryService;
+    private IMapper _mapper;
 
-    public AgendaCategoriesController(UserManager<ApplicationUser> userManager, IAgendaCategoryService agendaCategoryService)
+    public AgendaCategoriesController(UserManager<ApplicationUser> userManager,IMapper mapper, IAgendaCategoryService agendaCategoryService)
     {
       _userManager = userManager;
       _agendaCategoryService = agendaCategoryService;
+      _mapper = mapper;
     }
-
-    /// var user = await _userManager.GetUserAsync(HttpContext.User);  
 
     // GET: api/agendacategories
     [HttpGet]
     public IActionResult GetAgendaCategories()
     {
       List<AgendaCategory> agendaCategories = _agendaCategoryService.GetAll().ToList();
+      
+      return Ok(agendaCategories);
+    }
+
+    // GET: api/agendacategories
+    [HttpGet]
+    [Route("user")]
+    public IActionResult GetUserAgendaCategories()
+    {
+      var user = _userManager.GetUserId(this.User);
+
+      IEnumerable<AgendaCategoryDto> agendaCategories = _agendaCategoryService.GetAgendasForUser(user).ToList();
       
       return Ok(agendaCategories);
     }
@@ -54,9 +71,14 @@ namespace HMDI.Controllers
          return BadRequest(ModelState);
       }
 
-      AgendaCategory agendaCategory = _agendaCategoryService.Create(entity);
+      var user = _userManager.GetUserId(this.User);
+      entity.UserId = user;
 
-      return Ok(agendaCategory);
+      AgendaCategory agendaCategory = _agendaCategoryService.Create(entity);
+      AgendaCategoryDto agendaCategoryDto = _mapper.Map<AgendaCategoryDto>(agendaCategory);
+      agendaCategoryDto.AgendasCount = 0;
+
+      return Ok(agendaCategoryDto);
     }
 
     // PUT api/agendacategories/5

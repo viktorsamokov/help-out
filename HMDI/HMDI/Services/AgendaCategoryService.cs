@@ -1,8 +1,13 @@
 ﻿using HMDI.Data;
+using HMDI.Dtos;
 using HMDI.Entities;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System;
+using Microsoft.AspNetCore.Identity;
 
 namespace HMDI.Services
 {
@@ -13,16 +18,21 @@ namespace HMDI.Services
     AgendaCategory Create(AgendaCategory agenda);
     void Update(int id, AgendaCategory agenda);
     AgendaCategory Delete(int id);
+    IEnumerable<AgendaCategoryDto> GetAgendasForUser(string id);
     bool AgendaCategoryExists(int id);
   }
 
   public class AgendaCategoryService : IAgendaCategoryService
   {
+    private readonly UserManager<ApplicationUser> _userManager;
     private readonly ApplicationDbContext _db;
+    private IHttpContextAccessor _httpContextAccessor;
 
-    public AgendaCategoryService(ApplicationDbContext db)
+    public AgendaCategoryService(UserManager<ApplicationUser> userManager, ApplicationDbContext db, IHttpContextAccessor httpContextAccessor)
     {
+      _userManager = userManager;
       _db = db;
+      _httpContextAccessor = httpContextAccessor;
     }
 
     public bool AgendaCategoryExists(int id)
@@ -32,6 +42,7 @@ namespace HMDI.Services
 
     public AgendaCategory Create(AgendaCategory agendaCategory)
     {
+
       _db.AgendaCategories.Add(agendaCategory);
       _db.SaveChanges();
 
@@ -53,8 +64,21 @@ namespace HMDI.Services
       return agendaCategory;
     }
 
+    public IEnumerable<AgendaCategoryDto> GetAgendasForUser(string id)
+    {
+      IEnumerable<AgendaCategoryDto> categories = _db.AgendaCategories.Include(a => a.Agendas).Where(a => a.UserId == id).Select(cat => new AgendaCategoryDto
+      {
+        AgendasCount = cat.Agendas.Count,
+        CategoryName = cat.CategoryName,
+        Id = cat.Id
+      }).ToList();
+
+      return categories;
+    }
+
     public IEnumerable<AgendaCategory> GetAll()
     {
+      //var user = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.NameIdentifier).Value;
       return _db.AgendaCategories.ToList();
     }
 

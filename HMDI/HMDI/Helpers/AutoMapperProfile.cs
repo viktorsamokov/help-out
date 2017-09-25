@@ -13,6 +13,9 @@ namespace HMDI.Helpers
         public AutoMapperProfile()
         {
           CreateMap<ApplicationUser, LoggedInUser>();
+          CreateMap<AgendaCategory, AgendaCategoryDto>();
+          CreateMap<Agenda, AgendaDto>();
+          CreateMap<AgendaItem, AgendaItemDto>();
         }
     }
 }

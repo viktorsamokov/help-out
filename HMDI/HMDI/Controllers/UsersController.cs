@@ -19,11 +19,13 @@ namespace HMDI.Controllers
   [Route("api/[controller]")]
   public class UsersController : Controller
   {
+    private readonly SignInManager<ApplicationUser> _userManager;
     private IApplicationUserService _userService;
     private IMapper _mapper;
 
-    public UsersController(IApplicationUserService userService, IMapper mapper)
+    public UsersController(SignInManager<ApplicationUser> userManager, IApplicationUserService userService, IMapper mapper)
     {
+      _userManager = userManager;
       _userService = userService;
       _mapper = mapper;
     }
@@ -83,7 +85,9 @@ namespace HMDI.Controllers
 
       PasswordVerificationResult result = _userService.VerifyHashedPassword(user, model.Password);
 
-      if(result != PasswordVerificationResult.Success)
+      var signed = await _userManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false);
+
+      if(result != PasswordVerificationResult.Success || !signed.Succeeded)
       {
         return BadRequest();
       }

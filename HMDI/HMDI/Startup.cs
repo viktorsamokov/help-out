@@ -21,6 +21,7 @@ using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Http;
 
 namespace HMDI
 {
@@ -52,6 +53,7 @@ namespace HMDI
                 .AddDefaultTokenProviders();
 
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IUrlHelper>(x =>
             {
                 var actionContext = x.GetService<IActionContextAccessor>().ActionContext;
@@ -106,6 +108,8 @@ namespace HMDI
                     ValidateIssuerSigningKey = true
                 }
             });
+
+            app.UseIdentity();
 
             app.UseMvc();
         }
