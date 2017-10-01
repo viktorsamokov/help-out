@@ -18,13 +18,15 @@ import { RegisterService } from './register/register.service';
 import { AuthenticationService } from './shared/authentication.service';
 import { UserAdminComponent } from './user-admin/user-admin.component';
 import { UserPublicComponent } from './user-public/user-public.component';
-import { UserAgendaComponent } from './user-admin/user-agenda/user-agenda.component';
+import { AgendasComponent } from './user-admin/agendas/agendas.component';
 import { FavoritesComponent } from './user-admin/favorites/favorites.component';
 import { PlannerComponent } from './user-admin/planner/planner.component';
-import { UserAgendaService } from './user-admin/user-agenda/user-agenda.service';
+import { AgendasService } from './user-admin/agendas/agendas.service';
 import { PlannerService } from './user-admin/planner/planner.service';
 import { FavoritesService } from './user-admin/favorites/favorites.service';
-import { CategoryAgendasComponent } from './user-admin/user-agenda/category-agendas/category-agendas.component';
+import { CategoryAgendasComponent } from './user-admin/agendas/category-agendas/category-agendas.component';
+import { AgendaModalComponent } from './user-admin/agenda-modal/agenda-modal.component';
+import { ModalsService } from './user-admin/modals.service';
 
 @NgModule({
   declarations: [
@@ -37,10 +39,11 @@ import { CategoryAgendasComponent } from './user-admin/user-agenda/category-agen
     RegisterComponent,
     UserAdminComponent,
     UserPublicComponent,
-    UserAgendaComponent,
+    AgendasComponent,
     FavoritesComponent,
     PlannerComponent,
-    CategoryAgendasComponent
+    CategoryAgendasComponent,
+    AgendaModalComponent
   ],
   imports: [
     FormsModule,
@@ -55,9 +58,10 @@ import { CategoryAgendasComponent } from './user-admin/user-agenda/category-agen
     AuthGuardService, 
     RegisterService, 
     AuthenticationService, 
-    UserAgendaService, 
+    AgendasService, 
     PlannerService,
-    FavoritesService
+    FavoritesService,
+    ModalsService
     ]
 })
 export class AppModule { }

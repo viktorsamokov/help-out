@@ -1,4 +1,4 @@
-export class UserAgendaCategory {
+export class AgendaCategory {
     Id: number;
     CategoryName: string;
     AgendasCount: number;

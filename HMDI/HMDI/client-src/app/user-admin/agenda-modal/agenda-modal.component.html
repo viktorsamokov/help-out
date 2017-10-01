@@ -1,0 +1,89 @@
+<div mdbModal #agendaModal="mdb-modal" (onHidden)="onHidden()" class="modal overflow-auto fade" id="centralModalSuccess"
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-notify modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header lighten-purple darken-3">
+                <p class="heading lead">Agenda</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="agendaModal.hide()">
+                    <span aria-hidden="true" class="white-text">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form>
+                        <!--First row-->
+                        <div class="row">
+                            <!--First column-->
+                            <div class="col-md-6">
+                                <div class="md-form">
+                                    <i class="fa grey-text fa-text-width prefix"></i>
+                                    <input mdbActive type="text" length="60" mdbCharCounter [(ngModel)]="agenda.Title" class="form-control" id="agendaTitle" name="Title">
+                                    <label class="active" for="form9">Title</label>
+                                </div>
+                            </div>
+                            <!-- Switch -->
+                            <div class="col-md-6 text-right">
+                                <div class="switch">
+                                    <label>
+                                        Public
+                                        <input [(ngModel)]="agenda.Status" name="Status" type="checkbox">
+                                        <span class="lever"></span>
+                                        Private
+                                        </label>
+                                </div>
+                            </div>
+
+                            <!--Second column-->
+                            <div class="col-md-12">
+                                <div class="md-form">
+                                    <i class="fa grey-text fa-pencil prefix"></i>
+                                    <textarea mdbActive type="text" length="500" mdbCharCounter [(ngModel)]="agenda.Description" name="Description" id="description" class="md-textarea"></textarea>
+                                    <label for="form76">Description</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <p *ngIf="agenda.Items?.length < 1" class="h5 text-center light-blue-text">You have not added any items to this agenda</p>
+                    <table *ngIf="agenda.Items?.length > 0" class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Agenda Item</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of agenda.Items; let i = index">
+                                <th scope="row">{{i + 1}}</th>
+                                <td>{{item.Todo}}</td>
+                                <td><i (click)="removeAgendaItem(i)" class="fa pointer-cursor red-text fa-remove ml-1"></i></td>
+                            </tr>
+                            
+                        </tbody>
+                    </table>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="md-form">
+                                <input mdbActive type="text" (keyup.enter)="addAgendaItem(agendaItem)" [(ngModel)]="agendaItem" class="form-control" id="agendaItem" name="Item">
+                                <label class="active" for="form9">Agenda Item</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form form-group">
+                                <a class="btn mt-4 lighten-purple btn-sm waves-light" (click)="addAgendaItem(agendaItem)" mdbRippleRadius>Add</a>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn lighten-purple waves-light" (click)="save()" mdbRippleRadius>Create</a>
+                <a type="button" class="btn btn-outline-secondary-modal" data-dismiss="modal" (click)="agendaModal.hide()" mdbRippleRadius>Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>

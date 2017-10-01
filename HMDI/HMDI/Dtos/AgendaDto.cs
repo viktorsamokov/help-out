@@ -1,5 +1,6 @@
 ﻿using HMDI.Entities;
 using System;
+using System.Collections.Generic;
 
 namespace HMDI.Dtos
 {
@@ -12,6 +13,6 @@ namespace HMDI.Dtos
     public AgendaStatus Status { get; set; }
     public DateTime DateCreated { get; set; }
     public int AgendaCategoryId { get; set; }
-    public AgendaItemDto Items { get; set; }
+    public ICollection<AgendaItemDto> Items { get; set; }
   }
 }

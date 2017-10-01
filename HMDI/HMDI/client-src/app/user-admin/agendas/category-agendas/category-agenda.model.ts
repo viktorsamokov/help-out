@@ -8,5 +8,5 @@ export class Agenda {
     Status: number;
     DateCreated: Date;
     AgendaCategoryId: number;
-    Items: AgendaItem;
+    Items: Array<AgendaItem>;
 }

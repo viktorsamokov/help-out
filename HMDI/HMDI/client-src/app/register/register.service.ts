@@ -9,9 +9,7 @@ export class RegisterService {
   constructor(private http: Http) { }
 
   registerUser(user: Register){
-    console.log(user);
-    return this.http.post('/api/users', user, this.jwt).map((response: Response) => {
-      console.log(response.json());
+    return this.http.post('/api/users', user, this.jwt()).map((response: Response) => {
       return response.json();
     })
   }

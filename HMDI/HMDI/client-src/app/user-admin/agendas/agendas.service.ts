@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from "@angular/http";
-import { UserAgendaCategory } from "./user-agenda-category.model";
+import { AgendaCategory } from "./agenda-category.model";
 import { Observable } from "rxjs/Observable";
 import { Agenda } from "./category-agendas/category-agenda.model";
 
 @Injectable()
-export class UserAgendaService {
-  agendaCategories: UserAgendaCategory[] = null;
+export class AgendasService {
+  agendaCategories: AgendaCategory[] = null;
   agendas: any = {};
   constructor(private http: Http) { }
 
-  getUserAgendaCategories(): Observable<UserAgendaCategory[]>{
+  getUserAgendaCategories(): Observable<AgendaCategory[]>{
     if(this.agendaCategories != null){
       return Observable.of(this.agendaCategories);
     }
 
-    return this.http.get("/api/agendacategories/user", this.jwt).map((response: Response) => {
+    return this.http.get("/api/agendacategories/user", this.jwt()).map((response: Response) => {
       let categories = response.json();
       if(this.agendaCategories == null){
         this.agendaCategories = [];
@@ -32,9 +32,8 @@ export class UserAgendaService {
       return Observable.of(this.agendas[id]);
     }
 
-    return this.http.get("/api/agendas/category?id=" + id, this.jwt).map((response : Response) => {
+    return this.http.get("/api/agendas/category?id=" + id, this.jwt()).map((response : Response) => {
       let categoryAgendas = response.json();
-      console.log(categoryAgendas);
       this.agendas[id] = new Array<Agenda>();
       categoryAgendas.forEach(element => {
         this.agendas[id].push(element);
@@ -59,10 +58,9 @@ export class UserAgendaService {
 
   }
 
-  createAgendaCategory(agendaCategory): Observable<UserAgendaCategory>{
-    return this.http.post("/api/agendacategories", agendaCategory, this.jwt).map((response: Response) => {
+  createAgendaCategory(agendaCategory): Observable<AgendaCategory>{
+    return this.http.post("/api/agendacategories", agendaCategory, this.jwt()).map((response: Response) => {
       let category = response.json();
-      console.log(category);
       if(this.agendaCategories == null){
         this.agendaCategories = [];
       }
@@ -71,8 +69,17 @@ export class UserAgendaService {
     });
   }
 
-  createAgenda(){
-    
+  createAgenda(agenda): Observable<Agenda>{
+    return this.http.post("/api/agendas", agenda, this.jwt()).map((response: Response) => {
+      console.log(response);
+      let resp = response.json();
+      this.agendas[resp.agendaCategoryId].push(resp);
+      let cate = this.agendaCategories.find(cat => {
+        return cat.Id == resp.AgendaCategoryId;
+      });
+      cate.AgendasCount++;
+      return resp;
+    });
   }
 
   // private helper

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { AgendaModalComponent } from "./agenda-modal/agenda-modal.component";
+import { ModalsService } from "./modals.service";
 
 @Component({
   selector: 'app-user-admin',
@@ -6,8 +8,13 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./user-admin.component.scss']
 })
 export class UserAdminComponent implements OnInit {
+  @ViewChild('agendaModal') public agendaModal: AgendaModalComponent;
 
-  constructor() { }
+  constructor(private modalService: ModalsService) {
+    this.modalService.agendaModal.subscribe(data => {
+      this.agendaModal.open(data);
+    });
+  }
 
   ngOnInit() {
   }

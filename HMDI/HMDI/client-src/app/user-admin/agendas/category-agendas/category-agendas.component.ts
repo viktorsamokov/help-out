@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute } from "@angular/router";
-import { UserAgendaCategory } from "../user-agenda-category.model";
-import { UserAgendaService } from "../user-agenda.service";
+import { AgendaCategory } from "../agenda-category.model";
+import { AgendasService } from "../agendas.service";
 import { Agenda } from "./category-agenda.model";
+import { ModalsService } from "../../modals.service";
 
 @Component({
   selector: 'app-category-agendas',
@@ -13,7 +14,9 @@ export class CategoryAgendasComponent implements OnInit {
   categoryAgendas: Agenda[] = [];
   id: number;
   private sub: any;
-  constructor(private route: ActivatedRoute, private agendaService: UserAgendaService) { }
+
+  constructor(private modalService: ModalsService, private route: ActivatedRoute,
+     private agendaService: AgendasService) { }
 
   ngOnInit() {
     this.sub = this.route.params.subscribe(params => {
@@ -27,7 +30,7 @@ export class CategoryAgendasComponent implements OnInit {
   }
 
   openAgendaModal(){
-    
+    this.modalService.openAgendaModal(this.id);
   }
 
 }

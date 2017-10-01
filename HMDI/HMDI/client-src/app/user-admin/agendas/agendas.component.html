@@ -2,11 +2,11 @@
   <div class="col-lg-4 br-1">
     <p class="h6">Categories</p>
     <ul class="list-group">
-      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" routerLink="/admin/agendas/category/{{category.id}}" *ngFor="let category of agendaCategories" class="list-group-item d-flex justify-content-between align-items-center">
-        <div class="pointer-cursor w-100" (click)="openCategory(category)">{{category.categoryName}}</div>
+      <li routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" *ngFor="let category of agendaCategories" class="list-group-item d-flex justify-content-between align-items-center">
+        <div class="pointer-cursor w-100 outline-none" routerLink="/admin/agendas/category/{{category.Id}}"  (click)="openCategory(category)">{{category.CategoryName}}</div>
         <div>
-          <span class="badge pointer-cursor display-inline badge-primary badge-pill">{{category.agendasCount}}</span>
-          <span (click)="deleteCategory(category.id)" class="red-text pointer-cursor display-none pointer-cursor">
+          <span class="badge pointer-cursor display-inline badge-primary badge-pill">{{category.AgendasCount}}</span>
+          <span (click)="deleteCategory(category.Id)" class="red-text pointer-cursor display-none pointer-cursor">
             <i class="fa fa-close"></i>
           </span>
         </div>

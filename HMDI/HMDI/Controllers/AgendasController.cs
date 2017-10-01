@@ -16,11 +16,13 @@ namespace HMDI.Controllers
   [Route("api/[controller]")]
   public class AgendasController : Controller
   {
+    private readonly UserManager<ApplicationUser> _userManager;
     private IAgendaService _agendaService;
     private IMapper _mapper;
 
-    public AgendasController(IAgendaService agendaSevice, IMapper mapper)
+    public AgendasController(UserManager<ApplicationUser> userManager, IAgendaService agendaSevice, IMapper mapper)
     {
+      _userManager = userManager;
       _agendaService = agendaSevice;
       _mapper = mapper;
     }
@@ -72,9 +74,14 @@ namespace HMDI.Controllers
          return BadRequest(ModelState);
       }
 
-      Agenda agenda = _agendaService.Create(entity);
+      var user = _userManager.GetUserId(this.User);
 
-      return Ok(agenda);
+      entity.UserId = user;
+
+      Agenda agenda = _agendaService.Create(entity);
+      AgendaDto agendaDto = _mapper.Map<AgendaDto>(agenda);
+
+      return Ok(agendaDto);
     }
 
     // PUT api/agendas/5

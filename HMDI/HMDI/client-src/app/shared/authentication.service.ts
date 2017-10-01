@@ -14,7 +14,7 @@ export class AuthenticationService {
   constructor(private http: Http, private router: Router) { }
 
   login(loginModel: Login){
-    return this.http.post("/api/users/authenticate", loginModel, this.jwt).map((response: Response) => {
+    return this.http.post("/api/users/authenticate", loginModel, this.jwt()).map((response: Response) => {
       let user = response.json();
       if (user && user.token) {
           this.userSource.next(user as CurrentUser);
