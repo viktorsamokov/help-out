@@ -13,6 +13,7 @@ export class AgendasComponent implements OnInit {
   categoryName: string;
   openedCategoryName: string;
   agendaCategories: AgendaCategory[] = [];
+  loading = false;
 
   constructor(private router: Router, private route: ActivatedRoute, 
     private agendaService: AgendasService) { 
@@ -20,12 +21,14 @@ export class AgendasComponent implements OnInit {
     }
 
   ngOnInit() {
+    this.loading = true;
     this.getAgendas();
   }
 
   getAgendas(){
     this.agendaService.getUserAgendaCategories().subscribe(agendas => {
       this.agendaCategories = agendas;
+      this.loading = false;
     });
   }
 

@@ -13,6 +13,7 @@ import { Router } from "@angular/router";
 export class LoginComponent implements OnInit {
   @ViewChild('loginForm') public loginForm: ModalDirective;
   loginVm: Login;
+  public loading = false;
 
   constructor(private authenticationService: AuthenticationService, private router: Router) { 
     this.loginVm = new Login();
@@ -26,8 +27,10 @@ export class LoginComponent implements OnInit {
   }
 
   login(form){
+    this.loading = true;
     this.authenticationService.login(this.loginVm).subscribe(event => {
       this.loginForm.hide();
+      this.loading = false;
       this.authenticationService.isAuthenticated();
       this.router.navigate(['main']);
     });

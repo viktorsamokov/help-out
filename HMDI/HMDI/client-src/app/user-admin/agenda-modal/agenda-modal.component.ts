@@ -14,6 +14,7 @@ export class AgendaModalComponent {
   @ViewChild('agendaModal') public agendaModal: ModalDirective;
   public agenda: Agenda;
   public agendaItem: string;
+  public loading = false;
 
   constructor(private agendaService: AgendasService) {
     this.agenda = new Agenda();
@@ -50,6 +51,7 @@ export class AgendaModalComponent {
   }
 
   save(){
+    this.loading = true;
     if(this.agenda.Id){
       this.agendaService.updateAgenda(this.agenda).subscribe(val => {
         this.agendaModal.hide();
@@ -63,6 +65,7 @@ export class AgendaModalComponent {
   }
 
   public onHidden():void {
+    this.loading = false;
     this.agenda = new Agenda();
   }
 }
