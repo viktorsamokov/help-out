@@ -6,13 +6,20 @@
             </button>
         </div>
         <ul *ngFor="let agenda of categoryAgendas; let i = index" class="list-group mb-1">
-            <li class="list-group-item">
-                {{agenda.Title}}
-                <i class="fa fa-angle-down float-right pointer-cursor" (click)="i.toggle()"></i>
-                <div [mdbCollapse]="isCollapsed" #i="bs-collapse">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-file-text-o"></i> {{agenda.Title}}
+                <i class="fa fa-angle-down float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
+                <i [hidden]="agenda.state != 'active'" (click)="openAgendaModal(agenda)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>                    
+                <div [@animateHeight]="agenda.state">
+                    <hr />                
                     <div class="row">
                         <div class="col-12">
-                            <p>{{agenda.Description}}</p>
+                            <p>
+                                <u>Description</u>: {{agenda.Description}}
+                            </p>
+                            <ol>
+                                <li *ngFor="let item of agenda.Items"><span>{{item.Todo}}</span></li>
+                            </ol>
                         </div>
                     </div>
                 </div>

@@ -54,8 +54,12 @@ export class AgendasService {
 
   }
 
-  updateAgenda(){
-
+  updateAgenda(agenda): Observable<Agenda>{
+    return this.http.put("/api/agendas/" + agenda.Id, agenda, this.jwt()).map((response: Response) => {
+      let agendaIndex = this.agendas[agenda.AgendaCategoryId].findIndex(ag => ag.Id == agenda.Id);
+      this.agendas[agenda.AgendaCategoryId][agendaIndex] = agenda;
+      return agenda;
+    });
   }
 
   createAgendaCategory(agendaCategory): Observable<AgendaCategory>{
@@ -71,9 +75,8 @@ export class AgendasService {
 
   createAgenda(agenda): Observable<Agenda>{
     return this.http.post("/api/agendas", agenda, this.jwt()).map((response: Response) => {
-      console.log(response);
       let resp = response.json();
-      this.agendas[resp.agendaCategoryId].push(resp);
+      this.agendas[resp.AgendaCategoryId].push(resp);
       let cate = this.agendaCategories.find(cat => {
         return cat.Id == resp.AgendaCategoryId;
       });

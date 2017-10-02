@@ -34,6 +34,8 @@ namespace HMDI.Services
 
     public Agenda Create(Agenda agenda)
     {
+      agenda.DateCreated = DateTime.UtcNow;
+
       _db.Agendas.Add(agenda);
       _db.SaveChanges();
 
@@ -74,13 +76,34 @@ namespace HMDI.Services
 
     public void Update(int id, Agenda entity)
     {
-      Agenda agenda = _db.Agendas.Find(id);
+      Agenda agenda = _db.Agendas.Where(a => a.Id == id).Include(i => i.Items).FirstOrDefault();
 
       agenda.AgendaCategoryId = entity.AgendaCategoryId;
       agenda.Description = entity.Description;
       agenda.Title = entity.Title;
       agenda.Status = entity.Status;
       agenda.IsDeleted = entity.IsDeleted;
+      
+      List<AgendaItem> deletedItems = agenda.Items.Where(i => !entity.Items.Any(i2 => i2.Id == i.Id)).ToList();
+
+      foreach (AgendaItem item in deletedItems)
+      {
+        _db.Entry(item).State = EntityState.Deleted;
+      }
+
+      foreach (AgendaItem item in entity.Items)
+      {
+        if(item.Id > 0)
+        {
+          AgendaItem itemToChange = agenda.Items.Single(i => i.Id == item.Id);
+          _db.Entry(itemToChange).CurrentValues.SetValues(item);
+          _db.Entry(itemToChange).State = EntityState.Modified;
+        }
+        else
+        {
+          agenda.Items.Add(item);
+        }
+      }
 
       _db.Entry(agenda).State = EntityState.Modified;
 

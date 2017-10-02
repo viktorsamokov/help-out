@@ -9,4 +9,5 @@ export class Agenda {
     DateCreated: Date;
     AgendaCategoryId: number;
     Items: Array<AgendaItem>;
+    state: string;
 }

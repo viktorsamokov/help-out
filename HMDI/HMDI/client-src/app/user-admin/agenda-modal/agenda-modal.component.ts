@@ -40,21 +40,29 @@ export class AgendaModalComponent {
   }
 
   open(data){
-    console.log(data);
+    if(data.agenda){
+      this.agenda = JSON.parse(JSON.stringify(data.agenda));
+    }
+    else {
+      this.agenda.AgendaCategoryId = data.id;      
+    }
     this.agendaModal.show();
-    this.agenda.AgendaCategoryId = data;
   }
 
   save(){
-    console.log(this.agenda);
-    this.agendaService.createAgenda(this.agenda).subscribe(val => {
-      console.log(val);
-    });
+    if(this.agenda.Id){
+      this.agendaService.updateAgenda(this.agenda).subscribe(val => {
+        this.agendaModal.hide();
+      })
+    }
+    else {
+      this.agendaService.createAgenda(this.agenda).subscribe(val => {
+        this.agendaModal.hide();
+      });
+    }
   }
 
   public onHidden():void {
-    console.log("destroy");
     this.agenda = new Agenda();
   }
-  
 }
