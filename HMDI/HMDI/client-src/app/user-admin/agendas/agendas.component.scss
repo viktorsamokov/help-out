@@ -5,7 +5,6 @@
 
 .list-group-item:hover {
     background-color: #d0d1d2;
-    color: black;
 }
 
 .list-group-item:hover .display-none{
@@ -14,6 +13,14 @@
 
 .list-group-item:hover .display-inline{
     display: none !important;
+}
+
+.list-group-item.active{
+    background-color: #009688
+}
+
+.delete-category-text {
+    color: #801010;
 }
 
 .display-none {

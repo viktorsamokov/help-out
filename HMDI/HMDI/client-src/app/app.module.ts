@@ -29,6 +29,13 @@ import { FavoritesService } from './user-admin/favorites/favorites.service';
 import { CategoryAgendasComponent } from './user-admin/agendas/category-agendas/category-agendas.component';
 import { AgendaModalComponent } from './user-admin/agenda-modal/agenda-modal.component';
 import { ModalsService } from './user-admin/modals.service';
+import { DailyComponent } from './user-admin/planner/daily/daily.component';
+import { WeeklyComponent } from './user-admin/planner/weekly/weekly.component';
+import { ActiveComponent } from './user-admin/planner/active/active.component';
+import { WeeklyService } from './user-admin/planner/weekly/weekly.service';
+import { DailyService } from './user-admin/planner/daily/daily.service';
+import { ActiveService } from './user-admin/planner/active/active.service';
+import { ChecklistModalComponent } from './user-admin/checklist-modal/checklist-modal.component';
 
 @NgModule({
   declarations: [
@@ -45,7 +52,11 @@ import { ModalsService } from './user-admin/modals.service';
     FavoritesComponent,
     PlannerComponent,
     CategoryAgendasComponent,
-    AgendaModalComponent
+    AgendaModalComponent,
+    DailyComponent,
+    WeeklyComponent,
+    ActiveComponent,
+    ChecklistModalComponent
   ],
   imports: [
     FormsModule,
@@ -72,7 +83,10 @@ import { ModalsService } from './user-admin/modals.service';
     AgendasService, 
     PlannerService,
     FavoritesService,
-    ModalsService
+    ModalsService,
+    WeeklyService,
+    DailyService,
+    ActiveService
     ]
 })
 export class AppModule { }

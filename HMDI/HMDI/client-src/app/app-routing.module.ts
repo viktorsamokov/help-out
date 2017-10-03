@@ -8,6 +8,9 @@ import { AgendasComponent } from "./user-admin/agendas/agendas.component";
 import { PlannerComponent } from "./user-admin/planner/planner.component";
 import { FavoritesComponent } from "./user-admin/favorites/favorites.component";
 import { CategoryAgendasComponent } from "./user-admin/agendas/category-agendas/category-agendas.component";
+import { DailyComponent } from './user-admin/planner/daily/daily.component';
+import { WeeklyComponent } from './user-admin/planner/weekly/weekly.component';
+import { ActiveComponent } from './user-admin/planner/active/active.component';
 
 const routes: Routes = [
   { path: 'main', component: MainComponent, canActivate: [AuthGuardService] },
@@ -19,7 +22,14 @@ const routes: Routes = [
           {path: 'category/:id', component: CategoryAgendasComponent, canActivate: [AuthGuardService]}
         ]
       },
-      { path: 'planner', component: PlannerComponent, canActivate: [AuthGuardService] },
+      { path: 'planner', component: PlannerComponent, canActivate: [AuthGuardService], 
+        children: [
+          { path: 'today', component: DailyComponent, canActivate: [AuthGuardService]},
+          { path: 'week', component: WeeklyComponent, canActivate: [AuthGuardService]},
+          { path: 'active', component: ActiveComponent, canActivate: [AuthGuardService]},
+          { path: '', redirectTo: 'today', pathMatch: 'full'}
+        ]
+      },
       { path: 'favorites', component: FavoritesComponent, canActivate: [AuthGuardService] }
     ] 
   },

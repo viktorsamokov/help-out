@@ -16,7 +16,8 @@ export class RegisterComponent implements OnInit {
   @ViewChild('registerForm') public registerForm: ModalDirective;
   
   public registerVm: Register;
-  
+  public loading = false;
+
   constructor(private registerService: RegisterService) {
     this.registerVm = new Register();
    }
@@ -25,9 +26,9 @@ export class RegisterComponent implements OnInit {
   }
 
   register(form){
-    console.log(this.registerVm);
+    this.loading = true;
     this.registerService.registerUser(this.registerVm).subscribe(event => {
-      console.log("success", event);
+      this.loading = false;
     });
   }
 
