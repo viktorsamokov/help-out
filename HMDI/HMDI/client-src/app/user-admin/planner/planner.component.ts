@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalsService } from '../modals.service';
 
 @Component({
   selector: 'app-planner',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PlannerComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modalService: ModalsService) { }
 
   ngOnInit() {
+  }
+
+  openChecklistModal(){
+    let data = {};
+    this.modalService.openChecklistModal(data);
   }
 
 }

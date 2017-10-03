@@ -6,7 +6,12 @@
         <i class="fa fa-clock-o"></i> Today
       </a>
       <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" routerLink="/admin/planner/week" class="list-group-item list-group-item-action"><i class="fa fa-calendar"></i> Next Week</a>
-      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" routerLink="/admin/planner/active" class="list-group-item list-group-item-action"><i class="fa fa-calendar-check-o"></i> Unscheduled</a>
+      <a routerLinkActive="active" [routerLinkActiveOptions]="{exact: false}" routerLink="/admin/planner/active" class="list-group-item list-group-item-action"><i class="fa fa-calendar-check-o"></i> Active</a>
+    </div>
+    <div class="col-md-12">
+        <div class="md-form float-right form-group">
+            <a class="btn mt-3 lighten-purple btn-sm waves-light" (click)="openChecklistModal()" mdbRippleRadius>Add Checklist</a>
+        </div>
     </div>
   </div>
   <div class="col-lg-8">

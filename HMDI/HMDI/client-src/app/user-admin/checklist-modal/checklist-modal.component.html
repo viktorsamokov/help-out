@@ -1,3 +1,30 @@
-<p>
-  checklist-modal works!
-</p>
+<div mdbModal #checklistModal="mdb-modal" (onHidden)="onHidden()" class="modal overflow-auto fade" id="centralModalSuccess"
+    tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-notify modal-info" role="document">
+        <div class="modal-content">
+            <div class="modal-header lighten-purple darken-3">
+                <p class="heading lead">Checklist</p>
+                <button type="button" class="close pointer-cursor" data-dismiss="modal" aria-label="Close" (click)="checklistModal.hide()">
+                <span aria-hidden="true" class="white-text">×</span>
+            </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-md-6">
+                            <div class="md-form">
+                                <i class="fa grey-text fa-text-width prefix"></i>
+                                <input mdbActive type="text" class="form-control" id="agendaTitle" name="Title">
+                                <label class="active" for="form9">Title</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn lighten-purple waves-light" (click)="save()" mdbRippleRadius>Save</a>
+                <a type="button" class="btn btn-outline-secondary-modal" data-dismiss="modal" (click)="checklistModal.hide()" mdbRippleRadius>Cancel</a>
+            </div>
+        </div>
+    </div>
+</div>
