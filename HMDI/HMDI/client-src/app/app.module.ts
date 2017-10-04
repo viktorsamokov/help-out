@@ -5,6 +5,8 @@ import { MDBBootstrapModule } from 'angular-bootstrap-md';
 import { HttpModule } from '@angular/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
+import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -36,6 +38,7 @@ import { WeeklyService } from './user-admin/planner/weekly/weekly.service';
 import { DailyService } from './user-admin/planner/daily/daily.service';
 import { ActiveService } from './user-admin/planner/active/active.service';
 import { ChecklistModalComponent } from './user-admin/checklist-modal/checklist-modal.component';
+import { DayTasksPipe } from './shared/day-tasks.pipe';
 
 @NgModule({
   declarations: [
@@ -56,7 +59,8 @@ import { ChecklistModalComponent } from './user-admin/checklist-modal/checklist-
     DailyComponent,
     WeeklyComponent,
     ActiveComponent,
-    ChecklistModalComponent
+    ChecklistModalComponent,
+    DayTasksPipe
   ],
   imports: [
     FormsModule,
@@ -71,6 +75,8 @@ import { ChecklistModalComponent } from './user-admin/checklist-modal/checklist-
       secondaryColour: '#ffffff', 
       tertiaryColour: '#ffffff'
     }),
+    NgxMyDatePickerModule.forRoot(),
+    NgbModule.forRoot(),
     HttpModule,
     MDBBootstrapModule.forRoot()
   ],

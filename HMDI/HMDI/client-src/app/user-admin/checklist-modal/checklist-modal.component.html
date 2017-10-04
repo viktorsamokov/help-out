@@ -9,17 +9,75 @@
             </button>
             </div>
             <div class="modal-body">
+                
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-md-6">
-                            <div class="md-form">
-                                <i class="fa grey-text fa-text-width prefix"></i>
-                                <input mdbActive type="text" class="form-control" id="agendaTitle" name="Title">
-                                <label class="active" for="form9">Title</label>
-                            </div>
+                    <!--First column-->
+                    <div class="col-md-4">
+                        <div class="md-form">
+                            <input [(ngModel)]="checklist.Title" mdbActive type="text" class="form-control" id="agendaTitle" name="Title">
+                            <label class="active" for="form9">Checklist Title</label>
+                        </div>
+                    </div>
+            
+                    <!--Second column-->
+                    <div class="col-md-4 text-right">
+                        <div class="md-form mt-3">
+                            <input mdbActive type="text" class="col-md-6" style="float:none" placeholder="Select due date" ngx-mydatepicker name="mydate" [(ngModel)]="date"
+                            [options]="myOptions" #dp="ngx-mydatepicker" (dateChanged)="onDateChanged($event)" >
+                            <i (click)="dp.clearDate()" class="fa fa-remove ml-2 pointer-cursor"></i>
+                            <i (click)="dp.toggleCalendar()" class="fa fa-calendar ml-2 pointer-cursor"></i>
+                            
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="timepicker-angular">
+                            <ngb-timepicker [(ngModel)]="time" [meridian]="meridian"></ngb-timepicker>
                         </div>
                     </div>
                 </div>
+
+                <hr />
+                <p *ngIf="checklist.Items?.length < 1" class="h5 text-center light-blue-text">You have not added any items to this checklist</p>
+                <table *ngIf="checklist.Items?.length > 0" class="table table-hover table-sm">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Checklist Item</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of checklist.Items; let i = index">
+                                <th scope="row">{{i + 1}}</th>
+                                <td [hidden]="item.edit">{{item.Todo}}</td>
+                                <td [hidden]="!item.edit">
+                                    <input mdbActive class="col-md-11" type="text" [(ngModel)]="item.Todo">
+                                    <i [hidden]="!item.edit" (click)="item.edit = false" class="fa pointer-cursor blue-text fa-check"></i>                                        
+                                </td>
+                                <td>
+                                    <i [hidden]="item.edit" (click)="removeChecklistItem(i)" class="fa mr-2 float-right pointer-cursor red-text fa-remove ml-1"></i>
+                                    <i [hidden]="item.edit" (click)="item.edit = true" class="fa float-right pointer-cursor fa-edit ml-1"></i>                                        
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <hr />
+
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="md-form">
+                                <input mdbActive type="text" (keyup.enter)="addChecklistItem(checklistItem)" [(ngModel)]="checklistItem" class="form-control" id="agendaItem" name="Item">
+                                <label class="active" for="form9">Checklist Item</label>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4">
+                            <div class="md-form form-group">
+                                <a class="btn mt-4 lighten-purple btn-sm waves-light" (click)="addChecklistItem(checklistItem)" mdbRippleRadius>Add</a>
+                            </div>
+                        </div>
+                    </div>
             </div>
             <div class="modal-footer justify-content-center">
                 <a type="button" class="btn lighten-purple waves-light" (click)="save()" mdbRippleRadius>Save</a>

@@ -7,10 +7,22 @@
 @import "node_modules/angular-bootstrap-md/scss/mdb/free/data/variables";
 @import "./app/tabs";
 @import "./app/switch";
+@import "./app/checkbox";
 
 body {
     padding-top: 65px;
     background-color: #e8e5e5 !important;
+}
+
+.f-20 {
+    font-size: 20px !important;
+}
+
+.timepicker-angular .form-control{
+    margin-bottom: 0;
+    margin-top: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 
 .dark-purple {

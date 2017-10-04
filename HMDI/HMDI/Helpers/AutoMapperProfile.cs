@@ -12,6 +12,8 @@ namespace HMDI.Helpers
           CreateMap<AgendaCategory, AgendaCategoryDto>();
           CreateMap<Agenda, AgendaDto>();
           CreateMap<AgendaItem, AgendaItemDto>();
+          CreateMap<Checklist, ChecklistDto>();
+          CreateMap<ChecklistItem, ChecklistItemDto>();
         }
     }
 }

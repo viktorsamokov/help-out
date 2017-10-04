@@ -7,18 +7,27 @@ using HMDI.Services;
 using HMDI.Entities;
 using Microsoft.EntityFrameworkCore;
 using HMDI.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using AutoMapper;
+using HMDI.Dtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HMDI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   public class ChecklistsController : Controller
   {
+    private readonly UserManager<ApplicationUser> _userManager;
+    private IMapper _mapper;
     private IChecklistService _service;
 
-    public ChecklistsController(IChecklistService service)
+    public ChecklistsController(UserManager<ApplicationUser> userManager, IMapper mapper, IChecklistService service)
     {
+      _userManager = userManager;
+      _mapper = mapper;
       _service = service;
     }
       
@@ -43,6 +52,57 @@ namespace HMDI.Controllers
 
       return Ok(checklist);
     }
+
+    // GET api/checklists/5
+    [HttpGet("daily")]
+    public IActionResult GetDailyChecklists()
+    {
+      var user = _userManager.GetUserId(this.User);
+
+      IEnumerable<Checklist> checklists = _service.GetDailyChecklists(user);
+      IEnumerable<ChecklistDto> checklistsDto = _mapper.Map<IEnumerable<ChecklistDto>>(checklists);
+
+      if(checklistsDto == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(checklistsDto);
+    }
+
+    // GET api/checklists/5
+    [HttpGet("weekly")]
+    public IActionResult GetWeeklyChecklists()
+    {
+      var user = _userManager.GetUserId(this.User);
+
+      IEnumerable<Checklist> checklists = _service.GetWeeklyChecklists(user);
+      IEnumerable<ChecklistDto> checklistsDto = _mapper.Map<IEnumerable<ChecklistDto>>(checklists);
+
+      if(checklistsDto == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(checklistsDto);
+    }
+
+    // GET api/checklists/5
+    [HttpGet("active")]
+    public IActionResult GetActiveChecklists()
+    {
+      var user = _userManager.GetUserId(this.User);
+
+      IEnumerable<Checklist> checklists = _service.GetActiveChecklists(user);
+      IEnumerable<ChecklistDto> checklistsDto = _mapper.Map<IEnumerable<ChecklistDto>>(checklists);
+
+      if(checklistsDto == null)
+      {
+        return NotFound();
+      }
+
+      return Ok(checklistsDto);
+    }
         
     // POST api/checklists
     [HttpPost]
@@ -53,9 +113,14 @@ namespace HMDI.Controllers
          return BadRequest(ModelState);
       }
 
-      Checklist checklist = _service.Create(entity);
+      var user = _userManager.GetUserId(this.User);
 
-      return Ok(checklist);
+      entity.UserId = user;
+
+      Checklist checklist = _service.Create(entity);
+      ChecklistDto checklistDto = _mapper.Map<ChecklistDto>(checklist);
+
+      return Ok(checklistDto);
     }
 
     // PUT api/checklists/5

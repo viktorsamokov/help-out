@@ -1,6 +1,7 @@
 ﻿using HMDI.Data;
 using HMDI.Entities;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -67,7 +68,15 @@ namespace HMDI.Services
     {
       ChecklistItem item = _db.ChecklistItems.Find(id);
 
-      item.CheckedAt = entity.CheckedAt;
+      if(entity.IsChecked == false)
+      {
+        item.CheckedAt = null;
+      }
+      else
+      {
+        item.CheckedAt = DateTime.UtcNow;
+      }
+      
       item.Todo = entity.Todo;
       item.IsChecked = entity.IsChecked;
 

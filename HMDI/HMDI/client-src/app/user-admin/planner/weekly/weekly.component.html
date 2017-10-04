@@ -1,3 +1,220 @@
-<p>
-  weekly works!
-</p>
+<div class="row">
+    <div class="col-lg-12">
+        <p class="h5">The Next 7 Days</p>
+    </div>
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>Tomorrow</strong>
+                <small class="text-muted">{{ next7days.first | date: 'EEE dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 1).length == 0" class="purple-text float-right">No scheduled checklists</label>         
+        <ul *ngFor="let task of (tasks | dayTasks: 1); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+       
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.second | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.second | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 2).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        <ul *ngFor="let task of (tasks | dayTasks: 2); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.third | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.third | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 3).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        
+        <ul *ngFor="let task of (tasks | dayTasks: 3); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.forth | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.forth | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 4).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        
+        <ul *ngFor="let task of (tasks | dayTasks: 4); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.fifth | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.fifth | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 5).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        
+        <ul *ngFor="let task of (tasks | dayTasks: 5); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.sixth | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.sixth | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 6).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        
+        <ul *ngFor="let task of (tasks | dayTasks: 6); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="col-lg-12 mb-5">
+        <div class="text-right">
+            <h6>
+                <strong>{{ next7days.seventh | date: 'EEEE ' }}</strong>
+                <small class="text-muted">{{ next7days.seventh | date: 'dd MMM' }}</small>
+            </h6>
+        </div>
+        <hr />
+        <label *ngIf="(tasks | dayTasks: 7).length == 0" class="purple-text float-right">No scheduled checklists</label> 
+        
+        <ul *ngFor="let task of (tasks | dayTasks: 7); let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <i class="fa fa-check-square-o"></i> {{task.Title}}
+                <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
+                <div [@animateHeight]="task.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="mb-2 ml-3">
+                                 <div *ngFor="let item of task.Items" class="form-group">
+                                    <input (change)="toggleItem(item, task, i)"  [(ngModel)]="item.IsChecked" type="checkbox" class="filled-in" id="checkbox{{item.Id}}">
+                                    <label for="checkbox{{item.Id}}">{{item.Todo}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div> 
+</div>
