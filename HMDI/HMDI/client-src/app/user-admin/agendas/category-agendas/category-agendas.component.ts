@@ -38,6 +38,7 @@ export class CategoryAgendasComponent implements OnInit {
       this.id = +params['id']; // (+) converts string 'id' to a number
       this.agendaService.getAgendasByCategory(this.id).subscribe(agendas => {
         this.categoryAgendas = agendas;
+        console.log(agendas);
         this.categoryAgendas.forEach(element => {
           element.state = "inactive";
         });

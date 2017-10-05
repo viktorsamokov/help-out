@@ -21,6 +21,7 @@ export class ChecklistModalComponent implements OnInit {
   date: any;
   time = {hour: 0, minute: 0};
   meridian: false;
+  plannerType: string;
 
   constructor(private plannerService: PlannerService) {
     this.checklist = new Checklist();
@@ -45,6 +46,7 @@ export class ChecklistModalComponent implements OnInit {
 
     let item = new ChecklistItem();
     item.Todo = checklistItem;
+    item.IsChecked = false;
 
     this.checklist.Items.push(item);
     this.checklistItem = null;
@@ -55,6 +57,25 @@ export class ChecklistModalComponent implements OnInit {
   }
 
   open(data){
+    console.log(data);
+    if(data.task){
+      this.checklist = JSON.parse(JSON.stringify(data.task));
+      this.plannerType = data.planner;  
+
+      if(data.task.DueDate){
+        let dueDate = new Date(data.task.DueDate);
+        this.time = {
+           hour: dueDate.getHours(),
+           minute: dueDate.getMinutes()
+        }
+        this.date = {
+          date: {
+            year: dueDate.getFullYear(),
+            month: dueDate.getMonth() + 1,
+            day: dueDate.getDate()}
+        }
+      }
+    }
     this.checklistModal.show();
   }
 
@@ -64,15 +85,46 @@ export class ChecklistModalComponent implements OnInit {
   }
 
   save(){
-    if(this.date.jsdate && this.time){
-      let dueDate = new Date(this.date.date.year, this.date.date.month - 1, this.date.date.day, this.time.hour, this.time.minute);
-      this.checklist.DueDate = dueDate;
+    if(this.checklist.Id){
+      if(this.date && this.time){
+        let dueDate = new Date(this.date.date.year, this.date.date.month - 1, this.date.date.day, this.time.hour, this.time.minute);
+        this.checklist.DueDate = dueDate;
+      }
+      else {
+        this.checklist.DueDate = null;        
+      }
+    }
+    else {
+      if(this.date && this.date.jsdate && this.time){
+        let dueDate = new Date(this.date.date.year, this.date.date.month - 1, this.date.date.day, this.time.hour, this.time.minute);
+        this.checklist.DueDate = dueDate;
+      }
     }
 
-    this.plannerService.saveChecklist(this.checklist).subscribe(val => {
-      this.checklistModal.hide();
-    });
-    
+    if(this.checklist.Id){
+      let isLastChecked = this.checklist.Items.find(el => el.IsChecked == false);
+      if(!isLastChecked){
+        this.checklist.IsFinished = true;
+      }
+
+      this.plannerService.updateChecklist(this.checklist).subscribe(val => {
+        if(this.plannerType === 'daily'){
+          this.plannerService.removeFromDaily(this.checklist.Id);
+        }
+        else if(this.plannerType === 'weekly'){
+          this.plannerService.removeFromWeekly(this.checklist.Id);
+        }
+        else if(this.plannerType === 'active'){
+          this.plannerService.removeFromActive(this.checklist.Id);
+        }
+        this.checklistModal.hide();
+      });
+    }
+    else {
+      this.plannerService.saveChecklist(this.checklist).subscribe(val => {
+        this.checklistModal.hide();
+      });
+    }
   }
 
   public onHidden():void {

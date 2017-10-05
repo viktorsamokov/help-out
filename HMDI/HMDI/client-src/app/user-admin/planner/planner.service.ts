@@ -12,7 +12,7 @@ export class PlannerService {
 
   constructor(private http: Http) { }
 
-  getTodayTasks(){
+  getTodayTasks(): Observable<Checklist[]>{
     if(this.todayTasks != null){
       return Observable.of(this.todayTasks);
     }
@@ -20,7 +20,7 @@ export class PlannerService {
     return this.http.get("/api/checklists/daily", this.jwt()).map((response: Response) => {
       let tasks = response.json();
       if(this.todayTasks == null){
-        this.todayTasks = [];
+        this.todayTasks = new Array<Checklist>();
       }
       tasks.forEach(element => {
         this.todayTasks.push(element);
@@ -29,7 +29,7 @@ export class PlannerService {
     });
   }
 
-  getWeeklyTasks(){
+  getWeeklyTasks(): Observable<Checklist[]>{
     if(this.weeklyTasks != null){
       return Observable.of(this.weeklyTasks);
     }
@@ -46,7 +46,7 @@ export class PlannerService {
     });
   }
 
-  getActiveTasks(){
+  getActiveTasks(): Observable<Checklist[]>{
     if(this.activeTasks != null){
       return Observable.of(this.activeTasks);
     }
@@ -66,14 +66,20 @@ export class PlannerService {
   saveChecklist(checklist): Observable<Checklist>{
     return this.http.post("/api/checklists", checklist, this.jwt()).map((response: Response) => {
       let resp = response.json();
-      console.log(resp);
+      this.handleChecklist(resp);
+      
       return resp;
     });
   }
 
   updateChecklist(checklist): Observable<Checklist>{
     return this.http.put("/api/checklists/" + checklist.Id, checklist, this.jwt()).map((response: Response) => {
-      return checklist;
+      let resp = response.json();
+      if(!resp.IsFinished){
+        this.handleChecklist(resp);
+      }
+      
+      return resp;
     });
   }
 
@@ -83,10 +89,53 @@ export class PlannerService {
     });
   }
 
+  deleteChecklist(checklist): Observable<ChecklistItem>{
+    return this.http.delete("/api/checklists/" + checklist.Id, this.jwt()).map((response: Response) => {
+      return checklist;
+    });
+  }
+
+  removeFromDaily(id){
+    let index = this.todayTasks.findIndex(val => val.Id == id);
+    this.todayTasks.splice(index, 1);
+  }
+
+  removeFromWeekly(id){
+    let index = this.weeklyTasks.findIndex(val => val.Id == id);
+    this.weeklyTasks.splice(index, 1);
+  }
+
+  removeFromActive(id){
+    let index = this.activeTasks.findIndex(val => val.Id == id);
+    this.activeTasks.splice(index, 1);
+  }
+
   // private helper
   jwt(){
     let headers = new Headers({ 'Content-Type': 'application/json' });
     return new RequestOptions({ headers: headers });
+  }
+
+  handleChecklist(resp){
+    let today = new Date();
+    today.setHours(0, 0);
+    let tomorrow = new Date();
+    tomorrow.setHours(23, 59);
+    if(!resp.DueDate || new Date(resp.DueDate) < today ){
+      if(this.activeTasks){
+        this.activeTasks.push(resp);          
+      }
+    }
+    else if(new Date(resp.DueDate) > tomorrow){
+      if(this.weeklyTasks){
+        this.weeklyTasks.push(resp);          
+      }
+    }
+    else {
+      if(this.todayTasks){
+        this.todayTasks.push(resp);          
+      }
+    }
   }
 
 }

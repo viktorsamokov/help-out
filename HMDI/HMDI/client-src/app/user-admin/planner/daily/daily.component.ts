@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PlannerService } from '../planner.service';
 import { Checklist } from '../checklist.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ModalsService } from '../../modals.service';
 
 @Component({
   selector: 'app-daily',
@@ -23,11 +24,13 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class DailyComponent implements OnInit {
-  public tasks: Checklist[];
+  public tasks: Checklist[] = [];
   public today = new Date();
+  public subscription;
+  constructor(private plannerService: PlannerService, private modalService: ModalsService) {}
 
-  constructor(private plannerService: PlannerService) {
-    this.plannerService.getTodayTasks().subscribe(val => {
+  ngOnInit() {
+    this.subscription = this.plannerService.getTodayTasks().subscribe(val => {
       console.log(val);
       this.tasks = val;
       this.tasks.forEach(element => {
@@ -36,9 +39,8 @@ export class DailyComponent implements OnInit {
         }
       });
     });
-  }
 
-  ngOnInit() {
+    this.plannerService.getTodayTasks();
   }
 
   toggleTask(task){
@@ -50,9 +52,7 @@ export class DailyComponent implements OnInit {
   }
 
   toggleItem(item, task, taskIndex){
-    console.log(item.IsChecked);
     let isLastChecked = task.Items.find(el => el.IsChecked == false);
-    console.log(isLastChecked);
     if(!isLastChecked){
       task.IsFinished = true;
       this.plannerService.updateChecklist(task).subscribe(val => {
@@ -62,6 +62,18 @@ export class DailyComponent implements OnInit {
     else {
       this.plannerService.updateChecklistItem(item).subscribe(val => {});
     }
+  }
+
+  openChecklistModal(task){
+    let data = {task: task, planner: 'daily'};
+    this.modalService.openChecklistModal(data);
+  }
+
+  removeTask(task){
+    this.plannerService.deleteChecklist(task).subscribe(val => {
+      let index = this.tasks.findIndex(val => val.Id == task.Id);
+      this.tasks.splice(index, 1);
+    });
   }
 
 }

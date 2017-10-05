@@ -137,9 +137,11 @@ namespace HMDI.Controllers
           return BadRequest();
       }
 
+      Checklist checklist;
+
       try
       {
-        _service.Update(id, entity);
+        checklist = _service.Update(id, entity);
       }
       catch(DbUpdateConcurrencyException)
       {
@@ -152,7 +154,7 @@ namespace HMDI.Controllers
           throw new AppException("Update failed");
         }
       }
-      return NoContent();
+      return Ok(checklist);
     }
 
     // DELETE api/checklists/5

@@ -12,7 +12,7 @@ namespace HMDI.Services
     IEnumerable<Checklist> GetAll();
     Checklist GetById(int id);
     Checklist Create(Checklist checklist);
-    void Update(int id, Checklist entity);
+    Checklist Update(int id, Checklist entity);
     Checklist Delete(int id);
     bool ChecklistExists(int id);
     IEnumerable<Checklist> GetDailyChecklists(string userId);
@@ -102,9 +102,16 @@ namespace HMDI.Services
       return checklists;
     }
 
-    public void Update(int id, Checklist entity)
+    public Checklist Update(int id, Checklist entity)
     {
       Checklist checklist = _db.Checklists.Where(c => c.Id == id).Include(c => c.Items).FirstOrDefault();
+
+      List<ChecklistItem> deletedItems = checklist.Items.Where(i => !entity.Items.Any(i2 => i2.Id == i.Id)).ToList();
+
+      foreach (ChecklistItem item in deletedItems)
+      {
+        _db.Entry(item).State = EntityState.Deleted;
+      }
 
       if (entity.IsFinished)
       {
@@ -121,12 +128,30 @@ namespace HMDI.Services
           }
         }
       }
+      else
+      {
+        foreach (ChecklistItem item in entity.Items)
+        {
+          if(item.Id > 0)
+          {
+            ChecklistItem itemToChange = checklist.Items.Single(i => i.Id == item.Id);
+            _db.Entry(itemToChange).CurrentValues.SetValues(item);
+            _db.Entry(itemToChange).State = EntityState.Modified;
+          }
+          else
+          {
+            checklist.Items.Add(item);
+          }
+        }
+      }
 
       checklist.DueDate = entity.DueDate;
       checklist.Title = entity.Title;
 
       _db.Entry(checklist).State = EntityState.Modified;
       _db.SaveChanges();
+
+      return checklist;
     }
   }
 }

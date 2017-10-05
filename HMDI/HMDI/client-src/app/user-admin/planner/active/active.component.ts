@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Checklist } from '../checklist.model';
 import { PlannerService } from '../planner.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ModalsService } from '../../modals.service';
 
 @Component({
   selector: 'app-active',
@@ -23,10 +24,12 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
   ]
 })
 export class ActiveComponent implements OnInit {
-  public tasks: Checklist[];
+  public tasks: Checklist[] = [];
   public today = new Date();
 
-  constructor(private plannerService: PlannerService) {
+  constructor(private plannerService: PlannerService, private modalService: ModalsService) {  }
+
+  ngOnInit() {
     this.plannerService.getActiveTasks().subscribe(val => {
       console.log(val);
       this.tasks = val;
@@ -34,9 +37,6 @@ export class ActiveComponent implements OnInit {
         element.state = "inactive";
       });
     });
-  }
-
-  ngOnInit() {
   }
 
   toggleTask(task){
@@ -48,9 +48,7 @@ export class ActiveComponent implements OnInit {
   }
 
   toggleItem(item, task, taskIndex){
-    console.log(item.IsChecked);
     let isLastChecked = task.Items.find(el => el.IsChecked == false);
-    console.log(isLastChecked);
     if(!isLastChecked){
       task.IsFinished = true;
       this.plannerService.updateChecklist(task).subscribe(val => {
@@ -60,6 +58,18 @@ export class ActiveComponent implements OnInit {
     else {
       this.plannerService.updateChecklistItem(item).subscribe(val => {});
     }
+  }
+
+  openChecklistModal(task){
+    let data = {task: task, planner: 'active'};
+    this.modalService.openChecklistModal(data);
+  }
+
+  removeTask(task){
+    this.plannerService.deleteChecklist(task).subscribe(val => {
+      let index = this.tasks.findIndex(val => val.Id == task.Id);
+      this.tasks.splice(index, 1);
+    });
   }
 
 }

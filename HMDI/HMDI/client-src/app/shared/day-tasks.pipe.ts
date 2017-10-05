@@ -8,6 +8,9 @@ import { Checklist } from '../user-admin/planner/checklist.model';
 export class DayTasksPipe implements PipeTransform {
 
   transform(checklists: Checklist[], day: number): Checklist[] {
+    if(day == 0){
+      return checklists;
+    }
     let startOfDay = new Date();
     let endOfDay = new Date();
     startOfDay.setDate(startOfDay.getDate() + day);
