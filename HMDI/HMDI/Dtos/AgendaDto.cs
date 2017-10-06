@@ -14,5 +14,6 @@ namespace HMDI.Dtos
     public DateTime DateCreated { get; set; }
     public int AgendaCategoryId { get; set; }
     public ICollection<AgendaItemDto> Items { get; set; }
+    public ICollection<AgendaTagDto> AgendaTags { get; set; }
   }
 }

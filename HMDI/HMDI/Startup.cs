@@ -78,6 +78,7 @@ namespace HMDI
             services.AddScoped<IChecklistService, ChecklistService>();
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<IReviewService, ReviewService>();
+            services.AddScoped<ITagService, TagService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

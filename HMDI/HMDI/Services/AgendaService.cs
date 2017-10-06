@@ -36,6 +36,22 @@ namespace HMDI.Services
     {
       agenda.DateCreated = DateTime.UtcNow;
 
+      List<AgendaTag> tags = agenda.AgendaTags.ToList();
+
+      agenda.AgendaTags = new List<AgendaTag>();
+
+      foreach (AgendaTag tag in tags)
+      {
+        if (tag.TagId != 0)
+        {
+          agenda.AgendaTags.Add(new AgendaTag { TagId = tag.TagId, Agenda = agenda });
+        }
+        else
+        {
+          agenda.AgendaTags.Add(new AgendaTag { Tag = tag.Tag, Agenda = agenda });
+        }
+      }
+
       _db.Agendas.Add(agenda);
       _db.SaveChanges();
 
@@ -59,7 +75,7 @@ namespace HMDI.Services
 
     public IEnumerable<Agenda> GetAgendasForCategory(int id)
     {
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Where(a => a.AgendaCategoryId == id).ToList();
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.AgendaTags).ThenInclude(a => a.Tag).Where(a => a.AgendaCategoryId == id).ToList();
 
       return agendas;
     }
