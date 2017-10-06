@@ -1,4 +1,5 @@
 import { AgendaItem } from "./agenda-item.model";
+import { AgendaTag } from "../../../shared/agenda-tag.model";
 
 export class Agenda {
     Id: number;
@@ -9,5 +10,6 @@ export class Agenda {
     DateCreated: Date;
     AgendaCategoryId: number;
     Items: Array<AgendaItem>;
+    AgendaTags: Array<AgendaTag>;
     state: string;
 }

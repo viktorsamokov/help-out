@@ -17,7 +17,7 @@
                             <!--First column-->
                             <div class="col-md-6">
                                 <div class="md-form">
-                                    <i class="fa grey-text fa-text-width prefix"></i>
+                                    <i class="fa fa-icons-input grey-text fa-text-width prefix"></i>
                                     <input mdbActive type="text" length="60" [(ngModel)]="agenda.Title" class="form-control" id="agendaTitle" name="Title">
                                     <label class="active" for="form9">Title</label>
                                 </div>
@@ -37,8 +37,8 @@
                             <!--Second column-->
                             <div class="col-md-12">
                                 <div class="md-form">
-                                    <i class="fa grey-text fa-pencil prefix"></i>
-                                    <textarea mdbActive type="text"  [(ngModel)]="agenda.Description" name="Description" id="description" class="md-textarea"></textarea>
+                                    <i class="fa fa-icons-input grey-text fa-pencil prefix"></i>
+                                    <textarea mdbActive type="text" [(ngModel)]="agenda.Description" name="Description" id="description" class="md-textarea"></textarea>
                                     <label for="form76">Description</label>
                                 </div>
                             </div>
@@ -58,22 +58,21 @@
                                 <td [hidden]="item.edit">{{item.Todo}}</td>
                                 <td [hidden]="!item.edit">
                                     <input mdbActive class="col-md-11" type="text" [(ngModel)]="item.Todo">
-                                    <i [hidden]="!item.edit" (click)="item.edit = false" class="fa pointer-cursor blue-text fa-check"></i>                                        
+                                    <i [hidden]="!item.edit" (click)="item.edit = false" class="fa pointer-cursor blue-text fa-check"></i>
                                 </td>
                                 <td>
                                     <i [hidden]="item.edit" (click)="removeAgendaItem(i)" class="fa mr-2 float-right pointer-cursor red-text fa-remove ml-1"></i>
-                                    <i [hidden]="item.edit" (click)="item.edit = true" class="fa float-right pointer-cursor fa-edit ml-1"></i>                                        
+                                    <i [hidden]="item.edit" (click)="item.edit = true" class="fa float-right pointer-cursor fa-edit ml-1"></i>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
 
-                    <hr />
-
                     <div class="row">
                         <div class="col-md-8">
                             <div class="md-form">
-                                <input mdbActive type="text" (keyup.enter)="addAgendaItem(agendaItem)" [(ngModel)]="agendaItem" class="form-control" id="agendaItem" name="Item">
+                                <input mdbActive type="text" (keyup.enter)="addAgendaItem(agendaItem)" [(ngModel)]="agendaItem" class="form-control" id="agendaItem"
+                                    name="Item">
                                 <label class="active" for="form9">Agenda Item</label>
                             </div>
 
@@ -85,11 +84,30 @@
                         </div>
                     </div>
 
+                    <hr />
+
+                    <div class="row">
+                        <div *ngIf="!agenda.Id" class="col-md-4">
+                            <div class="md-form">
+                                <i class="fa fa-icons-input grey-text fa-tags prefix"></i>
+                                <input [(ngModel)]="model" (keyup.enter)="selectTag(model, input)" [ngbTypeahead]="search" mdbActive type="text" class="form-control" id="agendaTag" name="Tag" placeholder="Enter Tags (up to 5)"
+                                    [resultFormatter]="formatMatches" [inputFormatter]="formatMatches" [focusFirst]="false" (selectItem)="selectTag($event, input)"
+                                    #input>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="chip mt-4" *ngFor="let tag of agenda.AgendaTags">
+                                {{tag.Tag.Name}}
+                                <i *ngIf="!agenda.Id" class="close-chip fa fa-times" (click)="removeTag(tag)"></i>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="modal-footer justify-content-center">
-                <a type="button" class="btn lighten-purple waves-light" (click)="save()" mdbRippleRadius>Save</a>
-                <a type="button" class="btn btn-outline-secondary-modal" data-dismiss="modal" (click)="agendaModal.hide()" mdbRippleRadius>Cancel</a>
+                <button type="button" [disabled]="isInvalid()" class="btn lighten-purple waves-light" (click)="save()" mdbRippleRadius>Save</button>
+                <button type="button" class="btn btn-outline-secondary-modal" data-dismiss="modal" (click)="agendaModal.hide()" mdbRippleRadius>Cancel</button>
             </div>
         </div>
     </div>

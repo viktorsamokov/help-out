@@ -39,6 +39,7 @@ import { DailyService } from './user-admin/planner/daily/daily.service';
 import { ActiveService } from './user-admin/planner/active/active.service';
 import { ChecklistModalComponent } from './user-admin/checklist-modal/checklist-modal.component';
 import { DayTasksPipe } from './shared/day-tasks.pipe';
+import { TagService } from './shared/tag.service';
 
 @NgModule({
   declarations: [
@@ -92,7 +93,8 @@ import { DayTasksPipe } from './shared/day-tasks.pipe';
     ModalsService,
     WeeklyService,
     DailyService,
-    ActiveService
+    ActiveService,
+    TagService
     ]
 })
 export class AppModule { }
