@@ -10,6 +10,7 @@
                 <i class="fa fa-file-text-o"></i> {{agenda.Title}}
                 <i class="fa fa-angle-down float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
                 <i [hidden]="agenda.state != 'active'" (click)="openAgendaModal(agenda)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>                    
+                <i [hidden]="agenda.state != 'active'" (click)="removeAgenda(agenda)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                                    
                 <div [@animateHeight]="agenda.state">
                     <hr />                
                     <div class="row">

@@ -64,4 +64,10 @@ export class CategoryAgendasComponent implements OnInit {
     this.modalService.openAgendaModal(data);
   }
 
+  removeAgenda(agenda){
+    this.agendaService.removeAgenda(agenda).subscribe(val => {
+      
+    })
+  }
+
 }

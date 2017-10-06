@@ -46,8 +46,16 @@ export class AgendasService {
 
   }
 
-  removeAgenda(){
-
+  removeAgenda(agenda): Observable<Agenda>{
+    return this.http.delete("/api/agendas/"+ agenda.Id, this.jwt()).map((response: Response) => {
+      let agendaIndex = this.agendas[agenda.AgendaCategoryId].findIndex(ag => ag.Id == agenda.Id);
+      this.agendas[agenda.AgendaCategoryId].splice(agendaIndex, 1);
+      let cate = this.agendaCategories.find(cat => {
+        return cat.Id == agenda.AgendaCategoryId;
+      });
+      cate.AgendasCount--;
+      return agenda;
+    });
   }
 
   updateAgendaCategory(){
