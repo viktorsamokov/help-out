@@ -16,6 +16,8 @@ namespace HMDI.Services
     Agenda Delete(int id);
     bool AgendaExists(int id);
     IEnumerable<Agenda> GetAgendasForCategory(int id);
+    List<Agenda> SearchAgendasByTags(List<Tag> tags);
+    List<Agenda> SearchAgendasByName(string name);
   }
 
   public class AgendaService : IAgendaService
@@ -88,6 +90,25 @@ namespace HMDI.Services
     public Agenda GetById(int id)
     {
        return _db.Agendas.Find(id);
+    }
+
+    public List<Agenda> SearchAgendasByName(string name)
+    {
+      string[] words = name.Split(' ');
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items)
+        .Where(a => a.IsDeleted == false && a.Status == AgendaStatus.Public && words.All(w => a.Title.ToLower().Contains(w.ToLower()))).OrderByDescending(a => a.Id).Take(15);
+
+      return agendas.ToList();
+    }
+
+    public List<Agenda> SearchAgendasByTags(List<Tag> tags)
+    {
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).
+        Where(a => a.IsDeleted == false && a.Status == AgendaStatus.Public 
+        && tags.Any(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower())))
+        .OrderByDescending(a => tags.Count(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower()))).Take(15);
+
+      return agendas.ToList();
     }
 
     public void Update(int id, Agenda entity)

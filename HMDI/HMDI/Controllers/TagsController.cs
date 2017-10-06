@@ -10,6 +10,7 @@ using AutoMapper;
 using HMDI.Services;
 using Microsoft.EntityFrameworkCore;
 using HMDI.Helpers;
+using HMDI.Dtos;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,12 +46,14 @@ namespace HMDI.Controllers
     {
       IEnumerable<Tag> tags = _service.SearchTags(term);
 
-      if(tags == null)
+      List<TagDto> tagsDto = _mapper.Map<List<TagDto>>(tags);
+
+      if(tagsDto == null)
       {
         return NotFound();
       }
 
-      return Ok(tags);
+      return Ok(tagsDto);
     }
       
     // GET api/tags/5

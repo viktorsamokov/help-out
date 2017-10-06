@@ -1,3 +1,67 @@
-<p>
-  main works!
-</p>
+<div class="container main-height container-block mt-3">
+  <div class="row position-relative h-100">
+    <div class="col-md-4 br-1">
+      <p class="h6 mt-2">Search:</p>
+      <form class="form-inline">
+        <div class="form-group">
+          <input [value]="true" [(ngModel)]="searchByTag" name="group1" type="radio" id="radio11" checked="checked">
+          <label for="radio11">By Tags</label>
+        </div>
+        <div class="form-group">
+          <input [value]="false" [(ngModel)]="searchByTag" name="group1" type="radio" id="radio21">
+          <label for="radio21">By Name</label>
+        </div>
+      </form>
+      <form *ngIf="searchByTag" class="form-inline waves-light">
+        <i class="fa fa-icons-input grey-text fa-tags prefix"></i>
+        <input [(ngModel)]="model" class="form-control ml-2 mr-sm-2" type="text" id="agendaTag" name="model" [ngbTypeahead]="search"
+          placeholder="Enter Tags" aria-label="Enter Tags" [resultFormatter]="formatMatches" [inputFormatter]="formatMatches"
+          [focusFirst]="false" (selectItem)="selectTag($event, input)" #input>
+
+        <br>
+
+        <div class="chip" *ngFor="let tag of tags; let i = index">
+          {{tag.Name}}
+          <i class="close-chip fa fa-times" (click)="removeTag(tag, i)"></i>
+        </div>
+
+        <div class="w-100 text-right">
+          <button [disabled]="tags.length < 1" class="btn mt-2 lighten-purple btn-sm waves-light" (click)="searchByTags()" mdbRippleRadius>Search</button>
+        </div>
+      </form>
+      <form *ngIf="!searchByTag" class="form-inline waves-light">
+        <i class="fa fa-icons-input grey-text fa-pencil prefix"></i>
+        <input class="form-control ml-2 mr-sm-2" [(ngModel)]="agendaTitle" type="text" placeholder="Name" mdbRippleRadius name="agendaTitle"
+          aria-label="agendaTitle">
+        <div class="w-100 text-right">
+          <a class="btn mt-2 lighten-purple btn-sm waves-light" (click)="searchByName(agendaTitle)" mdbRippleRadius>Search</a>
+        </div>
+      </form>
+    </div>
+    <div class="col-md-8 overflow-auto">
+      <div class="row mt-4">
+        <div class="col-md-12">
+          <ul *ngFor="let agenda of agendas; let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+              <i class="fa fa-file-text-o"></i> {{agenda.Title}}
+              <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
+              <div [@animateHeight]="agenda.state">
+                <hr />
+                <div class="row">
+                  <div class="col-12">
+                    <p>
+                      <u>Description</u>: {{agenda.Description}}
+                    </p>
+                    <ol class="mb-2">
+                      <li *ngFor="let item of agenda.Items"><span>{{item.Todo}}</span></li>
+                    </ol>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

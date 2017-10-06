@@ -84,6 +84,40 @@ namespace HMDI.Controllers
       return Ok(agendaDto);
     }
 
+    // POST api/agendas/searchbytags
+    [HttpPost]
+    [Route("searchbytags")]
+    public IActionResult SearchAgendasByTags([FromBody]List<Tag> tags)
+    {
+      List<Agenda> agendas = new List<Agenda>();
+
+      if(tags.Count < 1)
+      {
+        return Ok(agendas);
+      }
+
+      agendas = _agendaService.SearchAgendasByTags(tags);
+
+      return Ok(agendas);
+    }
+
+    // GET api/agendas/searchbyname?name=name
+    [HttpGet]
+    [Route("searchbyname")]
+    public IActionResult SearchAgendasByName([FromQuery]string name)
+    {
+      List<Agenda> agendas = new List<Agenda>();
+
+      if(name.Length < 1)
+      {
+        return Ok(agendas);
+      }
+
+      agendas = _agendaService.SearchAgendasByName(name);
+
+      return Ok(agendas);
+    }
+
     // PUT api/agendas/5
     [HttpPut("{id}")]
     public IActionResult PutAgenda(int id, [FromBody]Agenda agenda)
