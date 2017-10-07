@@ -27,6 +27,7 @@ namespace HMDI.Services
     Task<ApplicationUser> FindUserByEmail(LoginDto model);
     PasswordVerificationResult VerifyHashedPassword(ApplicationUser user, string password);
     Task<JwtSecurityToken> GetJwtSecurityToken(ApplicationUser user);
+    List<FavoriteAgenda> GetFavorites(string userId);
   }
 
   public class ApplicationUserService : IApplicationUserService
@@ -50,6 +51,19 @@ namespace HMDI.Services
     public bool ApplicationUserExists(string id)
     {
       return _db.Users.Count(e => e.Id.Equals(id, StringComparison.Ordinal)) > 0;
+    }
+
+    public List<FavoriteAgenda> GetFavorites(string userId)
+    {
+      ApplicationUser user = _db.Users.Include(u => u.Favorites).ThenInclude(a => a.Agenda)
+        .ThenInclude(a => a.User)
+        .Include(u => u.Favorites).ThenInclude(a => a.Agenda)
+        .ThenInclude(a => a.Items)
+        .Where(u => u.Id == userId).FirstOrDefault();
+
+      List<FavoriteAgenda> favorites = user.Favorites.ToList();
+
+      return favorites;
     }
 
     public async Task<ApplicationUser> Create(RegisterDto registerDto)
@@ -143,6 +157,8 @@ namespace HMDI.Services
           new Claim(JwtRegisteredClaimNames.Sub, user.UserName)
         };
       }
+
+   
     #endregion
   }
 }

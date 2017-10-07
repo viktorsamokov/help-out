@@ -1,6 +1,48 @@
-<div>
-    <br>
-  <p>3. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil odit magnam minima, soluta doloribus reiciendis molestiae
-    placeat unde eos molestias. Quisquam aperiam, pariatur. Tempora, placeat ratione porro voluptate odit minima.</p>
+<div class="row">
+    <div class="col-md-12">
+        <ul *ngFor="let favoriteAgenda of favorites; let i = index" class="list-group mb-1">
+            <li class="list-group-item pb-0">
+                <div class="row">
+                    
+                     <div class="col">
+                      <i class="fa fa-file-text-o"></i> {{favoriteAgenda.Agenda.Title}}
+                     </div>
+                     
+                     <div class="col text-center">
+                        <ngb-rating *ngIf="favoriteAgenda.HasRated" [max]="5" [readonly]="true" [(rate)]="favoriteAgenda.Grade"></ngb-rating>
+                        <ngb-rating *ngIf="!favoriteAgenda.HasRated" [max]="5" [(rate)]="favoriteAgenda.Grade">
+                            <ng-template let-fill="fill">
+                              <span class="star" [class.filled]="fill === 100">&#9733;</span>
+                            </ng-template>
+                        </ngb-rating>
+                        <i class="fa f-20 fa-check green-text pointer-cursor" *ngIf="!favoriteAgenda.HasRated && favoriteAgenda.Grade > 0" (click)="rate(favoriteAgenda)"></i>
+                     </div>
+                     
+                     <div class="col">
+                        <i class="fa f-20 fa-angle-down float-right pointer-cursor" (click)="toggleAgenda(favoriteAgenda)"></i>
+                        <i [hidden]="favoriteAgenda.state != 'active'" (click)="removeFromFavorites(favoriteAgenda)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                                    
+                        <div class="chip float-right">
+                            <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> {{favoriteAgenda.Agenda.User.FirstName}} {{favoriteAgenda.Agenda.User.LastName}}
+                        </div>
+                     </div>
+                     
+                   </div>
+               
+                <div [@animateHeight]="favoriteAgenda.state">
+                    <hr />                
+                    <div class="row">
+                        <div class="col-12">
+                            <p>
+                                <u>Description</u>: {{favoriteAgenda.Agenda.Description}}
+                            </p>
+                            <ol class="mb-2">
+                                <li *ngFor="let item of favoriteAgenda.Agenda.Items"><span>{{item.Todo}}</span></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
 
+    </div>
 </div>

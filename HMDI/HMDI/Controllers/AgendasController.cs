@@ -96,9 +96,46 @@ namespace HMDI.Controllers
         return Ok(agendas);
       }
 
-      agendas = _agendaService.SearchAgendasByTags(tags);
+       var userId = _userManager.GetUserId(this.User);
+
+      agendas = _agendaService.SearchAgendasByTags(tags, userId);
 
       return Ok(agendas);
+    }
+
+    // POST api/agendas/searchbytags
+    [HttpPost]
+    [Route("favorite")]
+    public IActionResult SaveToFavorites([FromBody]Agenda agenda)
+    {
+      var userId = _userManager.GetUserId(this.User);
+
+      FavoriteAgenda favoriteAgenda = _agendaService.SaveToFavorites(agenda, userId);
+
+      if(favoriteAgenda == null)
+      {
+        return BadRequest();
+      }
+
+
+      return Ok(favoriteAgenda);
+    }
+
+    // POST api/agendas/searchbytags
+    [HttpPost]
+    [Route("rateagenda")]
+    public IActionResult RateAgenda([FromBody]FavoriteAgenda entity)
+    {
+      var userId = _userManager.GetUserId(this.User);
+
+      FavoriteAgenda favoriteAgenda = _agendaService.RateAgenda(entity, userId);
+
+      if(favoriteAgenda == null)
+      {
+        return BadRequest();
+      }
+
+      return Ok(favoriteAgenda);
     }
 
     // GET api/agendas/searchbyname?name=name
@@ -113,7 +150,9 @@ namespace HMDI.Controllers
         return Ok(agendas);
       }
 
-      agendas = _agendaService.SearchAgendasByName(name);
+      var userId = _userManager.GetUserId(this.User);
+
+      agendas = _agendaService.SearchAgendasByName(name, userId);
 
       return Ok(agendas);
     }

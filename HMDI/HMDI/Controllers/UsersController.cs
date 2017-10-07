@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Threading.Tasks;
 
@@ -20,12 +21,14 @@ namespace HMDI.Controllers
   public class UsersController : Controller
   {
     private readonly SignInManager<ApplicationUser> _userManager;
+    private readonly UserManager<ApplicationUser> _user;  
     private IApplicationUserService _userService;
     private IMapper _mapper;
 
-    public UsersController(SignInManager<ApplicationUser> userManager, IApplicationUserService userService, IMapper mapper)
+    public UsersController(SignInManager<ApplicationUser> userManager, UserManager<ApplicationUser> user, IApplicationUserService userService, IMapper mapper)
     {
       _userManager = userManager;
+      _user = user;
       _userService = userService;
       _mapper = mapper;
     }
@@ -65,6 +68,19 @@ namespace HMDI.Controllers
       ApplicationUser user = await _userService.Create(entity);
 
       return Ok(user);
+    }
+
+    // GET api/users/favorite
+    [HttpGet]
+    [Route("favoriteagendas")]
+    public IActionResult GetFavoriteAgendas()
+    {
+      var userId = _user.GetUserId(this.User);
+
+      List<FavoriteAgenda> favorites = _userService.GetFavorites(userId);
+      List<FavoriteAgendaDto> favoritesDto = _mapper.Map<List<FavoriteAgendaDto>>(favorites);
+
+      return Ok(favoritesDto);
     }
 
     [AllowAnonymous]

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 import { TagService } from '../shared/tag.service';
 import { Agenda } from '../user-admin/agendas/category-agendas/category-agenda.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { FavoritesService } from '../user-admin/favorites/favorites.service';
 
 @Component({
   templateUrl: './main.component.html',
@@ -33,7 +34,7 @@ export class MainComponent implements OnInit {
   public model: any;
   formatMatches = (value: any) => value.Name || '';
 
-  constructor(private mainService: MainService, private tagService: TagService) { }
+  constructor(private mainService: MainService, private favoriteService: FavoritesService, private tagService: TagService) { }
 
   ngOnInit() {
   }
@@ -92,9 +93,14 @@ export class MainComponent implements OnInit {
       agendas.forEach(val => {
         val.state = "inactive";
       });
-      console.log(agendas);
       
       this.agendas = agendas;
     })
+  }
+
+  saveToFavorites(agenda){
+    this.mainService.addToFavorites(agenda).subscribe(val => {
+      this.favoriteService.addToFavorites(val);
+    });
   }
 }

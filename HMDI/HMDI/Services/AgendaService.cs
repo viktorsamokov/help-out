@@ -16,8 +16,10 @@ namespace HMDI.Services
     Agenda Delete(int id);
     bool AgendaExists(int id);
     IEnumerable<Agenda> GetAgendasForCategory(int id);
-    List<Agenda> SearchAgendasByTags(List<Tag> tags);
-    List<Agenda> SearchAgendasByName(string name);
+    List<Agenda> SearchAgendasByTags(List<Tag> tags, string userId);
+    List<Agenda> SearchAgendasByName(string name, string userId);
+    FavoriteAgenda SaveToFavorites(Agenda agenda, string userId);
+    FavoriteAgenda RateAgenda(FavoriteAgenda favorite, string userId);
   }
 
   public class AgendaService : IAgendaService
@@ -54,6 +56,9 @@ namespace HMDI.Services
         }
       }
 
+      Rating rating = new Rating() { Agenda = agenda };
+      agenda.Rating = rating;
+
       _db.Agendas.Add(agenda);
       _db.SaveChanges();
 
@@ -69,7 +74,10 @@ namespace HMDI.Services
         return null;
       }
 
-      _db.Agendas.Remove(agenda);
+      agenda.IsDeleted = true;
+      agenda.Status = AgendaStatus.Private;
+
+      _db.Agendas.Update(agenda);
       _db.SaveChanges();
       
       return agenda;
@@ -77,7 +85,7 @@ namespace HMDI.Services
 
     public IEnumerable<Agenda> GetAgendasForCategory(int id)
     {
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.AgendaTags).ThenInclude(a => a.Tag).Where(a => a.AgendaCategoryId == id).ToList();
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.AgendaTags).ThenInclude(a => a.Tag).Where(a => a.AgendaCategoryId == id && a.IsDeleted == false).ToList();
 
       return agendas;
     }
@@ -92,20 +100,100 @@ namespace HMDI.Services
        return _db.Agendas.Find(id);
     }
 
-    public List<Agenda> SearchAgendasByName(string name)
+    public FavoriteAgenda RateAgenda(FavoriteAgenda favorite, string userId)
+    {
+      Agenda agenda = _db.Agendas.Include(a => a.Favorites).ThenInclude(a => a.Agenda).ThenInclude(a => a.User)
+        .Include(u => u.Favorites).ThenInclude(a => a.Agenda).ThenInclude(a => a.Items)
+        .Include(a => a.Rating).Where(a => a.Id == favorite.AgendaId).FirstOrDefault();
+
+      favorite.HasRated = true;
+
+      if(agenda == null)
+      {
+        return null;
+      }
+
+      if(favorite.Grade == 1)
+      {
+        agenda.Rating.One++;
+      }
+      else if(favorite.Grade == 2)
+      {
+        agenda.Rating.Two++;
+      }
+      else if(favorite.Grade == 3)
+      {
+        agenda.Rating.Three++;
+      }
+      else if(favorite.Grade == 4)
+      {
+        agenda.Rating.Four++;
+      }
+      else if(favorite.Grade == 5)
+      {
+        agenda.Rating.Five++;
+      }
+
+      agenda.Rating.TotalVotes++;
+      agenda.Rating.Avg = CalculateAvg(agenda.Rating);
+
+      FavoriteAgenda fav = agenda.Favorites.Single(a => a.UserId == userId && a.AgendaId == agenda.Id);
+      _db.Entry(fav).CurrentValues.SetValues(favorite);
+      _db.Entry(fav).State = EntityState.Modified;
+
+      _db.Update(agenda);
+      _db.SaveChanges();
+
+      return fav;
+    }
+
+    public FavoriteAgenda SaveToFavorites(Agenda agenda, string userId)
+    {
+      ApplicationUser user = _db.Users.Include(u => u.Favorites).Where(u => u.Id == userId).FirstOrDefault();
+
+      var exist = user.Favorites.Where(f => f.AgendaId == agenda.Id).FirstOrDefault();
+
+      if (exist != null)
+      {
+        return null;
+      }
+
+      user.Favorites.Add(new FavoriteAgenda
+      {
+        AgendaId = agenda.Id,
+        UserId = userId,
+        HasRated = false
+      });
+
+      _db.Users.Update(user);
+      _db.SaveChanges();
+
+      FavoriteAgenda fav = user.Favorites.Where(f => f.AgendaId == agenda.Id).FirstOrDefault();
+      fav.Agenda = agenda;
+
+      return fav;
+    }
+
+    public List<Agenda> SearchAgendasByName(string name, string userId)
     {
       string[] words = name.Split(' ');
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items)
-        .Where(a => a.IsDeleted == false && a.Status == AgendaStatus.Public && words.All(w => a.Title.ToLower().Contains(w.ToLower()))).OrderByDescending(a => a.Id).Take(15);
+
+      IEnumerable<Agenda> favoredAgendas = _db.Agendas.Include(a => a.Favorites).Where(a => a.Favorites.Any(af => af.UserId == userId));
+
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User)
+        .Where(a => a.UserId != userId && a.IsDeleted == false && a.Status == AgendaStatus.Public && 
+        words.All(w => a.Title.ToLower().Contains(w.ToLower()))).Except(favoredAgendas).OrderByDescending(a => a.Id).Take(15);
 
       return agendas.ToList();
     }
 
-    public List<Agenda> SearchAgendasByTags(List<Tag> tags)
+    public List<Agenda> SearchAgendasByTags(List<Tag> tags, string userId)
     {
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).
-        Where(a => a.IsDeleted == false && a.Status == AgendaStatus.Public 
-        && tags.Any(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower())))
+      IEnumerable<Agenda> favoredAgendas = _db.Agendas.Include(a => a.Favorites).Where(a => a.Favorites.Any(af => af.UserId == userId));
+
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User).
+        Where(a => a.UserId != userId && a.IsDeleted == false && a.Status == AgendaStatus.Public 
+        && tags.Any(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower()))).Except(favoredAgendas)
         .OrderByDescending(a => tags.Count(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower()))).Take(15);
 
       return agendas.ToList();
@@ -146,5 +234,12 @@ namespace HMDI.Services
 
       _db.SaveChanges();
     }
+
+    #region CalculateAvg
+    private double CalculateAvg(Rating rating)
+    {
+      return (rating.One * 1 + rating.Two * 2 + rating.Three * 3 + rating.Four * 4 + rating.Five * 5) / rating.TotalVotes;
+    }
+    #endregion
   }
 }

@@ -22,6 +22,13 @@ export class MainService {
       });
   }
 
+  addToFavorites(agenda): Observable<any>{
+    return this.http.post("/api/agendas/favorite", agenda, this.jwt()).map((response: Response) => {
+      let resp = response.json();
+      return resp;
+    });
+  }
+
   // private helper
   private jwt(){
     let headers = new Headers({ 'Content-Type': 'application/json' });

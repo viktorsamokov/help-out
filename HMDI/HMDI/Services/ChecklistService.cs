@@ -65,7 +65,7 @@ namespace HMDI.Services
       DateTime startOfToday = DateTime.Today;
 
       IEnumerable<Checklist> checklists = _db.Checklists.Include(c => c.Items).Where(c => c.UserId == user && 
-      (c.DueDate == null || c.DueDate < startOfToday)).ToList();
+      (c.DueDate == null || c.DueDate < startOfToday) && c.IsFinished == false).ToList();
 
       return checklists;
     }
@@ -86,7 +86,7 @@ namespace HMDI.Services
       DateTime endOfToday = DateTime.Today.AddHours(23).AddMinutes(59).AddSeconds(59);
 
       IEnumerable<Checklist> checklists = _db.Checklists.Include(c =>c.Items).Where(c => c.UserId == userId && 
-      (c.DueDate > startOfToday && c.DueDate < endOfToday)).ToList();
+      (c.DueDate > startOfToday && c.DueDate < endOfToday) && c.IsFinished == false).ToList();
 
       return checklists;
     }
@@ -97,7 +97,7 @@ namespace HMDI.Services
       DateTime endOfOneWeek = DateTime.Today.AddDays(7).AddHours(23).AddMinutes(59).AddSeconds(59);
 
       IEnumerable<Checklist> checklists = _db.Checklists.Include(c =>c.Items).Where(c => c.UserId == user && 
-      (c.DueDate > startOfTomorrow && c.DueDate < endOfOneWeek)).ToList();
+      (c.DueDate > startOfTomorrow && c.DueDate < endOfOneWeek) && c.IsFinished == false).ToList();
 
       return checklists;
     }

@@ -45,6 +45,10 @@
             <li class="list-group-item pb-0">
               <i class="fa fa-file-text-o"></i> {{agenda.Title}}
               <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
+              <i [hidden]="agenda.state != 'active'" (click)="saveToFavorites(agenda)" class="fa mr-2 pointer-cursor fa-pencil float-right purple-text"></i>
+              <div class="chip float-right">
+                  <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> {{favoriteAgenda.Agenda.User.FirstName}} {{favoriteAgenda.Agenda.User.LastName}}
+              </div>
               <div [@animateHeight]="agenda.state">
                 <hr />
                 <div class="row">
