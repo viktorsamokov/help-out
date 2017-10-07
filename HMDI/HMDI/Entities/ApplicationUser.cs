@@ -16,5 +16,6 @@ namespace HMDI.Entities
 
         public virtual ICollection<Checklist> Checklists { get; set; }
 
+        public virtual ICollection<FavoriteAgenda> Favorites { get; set; }
     }
 }

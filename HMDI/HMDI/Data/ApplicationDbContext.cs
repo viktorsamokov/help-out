@@ -44,6 +44,19 @@ namespace HMDI.Data
         .HasOne(at => at.Tag)
         .WithMany(at => at.AgendaTags)
         .HasForeignKey(at => at.TagId);
+
+      builder.Entity<FavoriteAgenda>()
+        .HasKey(f => new { f.AgendaId, f.UserId });
+
+      builder.Entity<FavoriteAgenda>()
+        .HasOne(at => at.Agenda)
+        .WithMany(at => at.Favorites)
+        .HasForeignKey(at => at.AgendaId);
+
+      builder.Entity<FavoriteAgenda>()
+        .HasOne(at => at.User)
+        .WithMany(at => at.Favorites)
+        .HasForeignKey(at => at.UserId);
     }
   }
 }

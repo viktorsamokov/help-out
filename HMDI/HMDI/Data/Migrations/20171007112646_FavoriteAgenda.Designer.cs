@@ -9,9 +9,10 @@ using HMDI.Entities;
 namespace HMDI.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20171007112646_FavoriteAgenda")]
+    partial class FavoriteAgenda
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -195,10 +196,6 @@ namespace HMDI.Migrations
                     b.Property<int>("AgendaId");
 
                     b.Property<string>("UserId");
-
-                    b.Property<int>("Grade");
-
-                    b.Property<bool>("HasRated");
 
                     b.HasKey("AgendaId", "UserId");
 

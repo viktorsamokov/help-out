@@ -42,5 +42,7 @@ namespace HMDI.Entities
         public virtual ICollection<AgendaItem> Items { get; set; }
 
         public virtual ICollection<AgendaTag> AgendaTags { get; set; }
+
+        public virtual ICollection<FavoriteAgenda> Favorites { get; set; }
     }
 }

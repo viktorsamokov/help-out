@@ -10,9 +10,11 @@ namespace HMDI.Dtos
     public string Title { get; set; }
     public string Description { get; set; }
     public bool IsDeleted { get; set; }
+    public string UserId { get; set; }
     public AgendaStatus Status { get; set; }
     public DateTime DateCreated { get; set; }
     public int AgendaCategoryId { get; set; }
+    public LoggedInUser User { get; set; }
     public ICollection<AgendaItemDto> Items { get; set; }
     public ICollection<AgendaTagDto> AgendaTags { get; set; }
   }
