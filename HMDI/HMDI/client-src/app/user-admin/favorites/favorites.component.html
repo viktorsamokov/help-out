@@ -20,7 +20,8 @@
                      
                      <div class="col">
                         <i class="fa f-20 fa-angle-down float-right pointer-cursor" (click)="toggleAgenda(favoriteAgenda)"></i>
-                        <i [hidden]="favoriteAgenda.state != 'active'" (click)="removeFromFavorites(favoriteAgenda)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                                    
+                        <i [hidden]="favoriteAgenda.state != 'active'" mdbTooltip="Remove agenda" placement="top" (click)="removeFromFavorites(favoriteAgenda)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                                    
+                        <i [hidden]="favoriteAgenda.state != 'active'" mdbTooltip="Convert to checklist" placement="top" (click)="convertToChecklist(favoriteAgenda)" class="fa pointer-cursor fa-clipboard float-right"></i>                                                                                            
                         <div class="chip float-right">
                             <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> {{favoriteAgenda.Agenda.User.FirstName}} {{favoriteAgenda.Agenda.User.LastName}}
                         </div>

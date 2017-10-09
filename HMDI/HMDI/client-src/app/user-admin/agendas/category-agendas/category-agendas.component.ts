@@ -5,6 +5,8 @@ import { AgendasService } from "../agendas.service";
 import { Agenda } from "./category-agenda.model";
 import { ModalsService } from "../../modals.service";
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { Checklist } from '../../planner/checklist.model';
+import { ChecklistItem } from '../../planner/checklist-item.model';
 
 @Component({
   selector: 'app-category-agendas',
@@ -30,7 +32,7 @@ export class CategoryAgendasComponent implements OnInit {
   id: number;
   private sub: any;
 
-  constructor(private modalService: ModalsService, private route: ActivatedRoute,
+  constructor (private modalService: ModalsService, private route: ActivatedRoute,
      private agendaService: AgendasService) { }
 
   ngOnInit() {
@@ -53,6 +55,23 @@ export class CategoryAgendasComponent implements OnInit {
     }else {
       agenda.state = (agenda.state === 'inactive' ? 'active' : 'inactive');      
     }
+  }
+  
+  convertToChecklist(agenda){
+    let checklist = new Checklist();
+    checklist.state = "inactive";
+    checklist.Title = agenda.Title;
+    checklist.IsFinished = false;
+    checklist.Items = new Array<ChecklistItem>();
+    agenda.Items.forEach(element => {
+      let checklistItem = new ChecklistItem();
+      checklistItem.IsChecked = false;
+      checklistItem.Todo = element.Todo;
+      checklist.Items.push(checklistItem);
+    });
+
+    let data = { task: checklist, planner: '' };
+    this.modalService.openChecklistModal(data);
   }
 
   openAgendaModal(agenda){

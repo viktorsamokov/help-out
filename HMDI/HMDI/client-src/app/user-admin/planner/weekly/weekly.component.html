@@ -15,8 +15,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
                 <div [@animateHeight]="task.state">
                     <hr />                
                     <div class="row">
@@ -48,8 +48,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
                 <div [@animateHeight]="task.state">
                     <hr />                
                     <div class="row">
@@ -81,8 +81,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
 
                 <div [@animateHeight]="task.state">
                     <hr />                
@@ -115,8 +115,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
 
                 <div [@animateHeight]="task.state">
                     <hr />                
@@ -149,8 +149,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
 
                 <div [@animateHeight]="task.state">
                     <hr />                
@@ -183,8 +183,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
 
                 <div [@animateHeight]="task.state">
                     <hr />                
@@ -217,8 +217,8 @@
             <li class="list-group-item pb-0">
                 <i class="fa fa-check-square-o"></i> {{task.Title}}
                 <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleTask(task)"></i>
-                <i [hidden]="task.state != 'active'" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
-                <i [hidden]="task.state != 'active'" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
+                <i [hidden]="task.state != 'active'" mdbTooltip="Edit checklist" placement="top" (click)="openChecklistModal(task)" class="fa pointer-cursor fa-pencil float-right purple-text"></i>
+                <i [hidden]="task.state != 'active'" mdbTooltip="Remove checklist" placement="top" (click)="removeTask(task)" class="fa pointer-cursor fa-remove float-right red-text"></i>                                                    
 
                 <div [@animateHeight]="task.state">
                     <hr />                

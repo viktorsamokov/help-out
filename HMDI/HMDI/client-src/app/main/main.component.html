@@ -31,7 +31,7 @@
       </form>
       <form *ngIf="!searchByTag" class="form-inline waves-light">
         <i class="fa fa-icons-input grey-text fa-pencil prefix"></i>
-        <input class="form-control ml-2 mr-sm-2" [(ngModel)]="agendaTitle" type="text" placeholder="Name" mdbRippleRadius name="agendaTitle"
+        <input class="form-control ml-2 mr-sm-2" [(ngModel)]="agendaTitle" type="text" placeholder="Name" name="agendaTitle"
           aria-label="agendaTitle">
         <div class="w-100 text-right">
           <a class="btn mt-2 lighten-purple btn-sm waves-light" (click)="searchByName(agendaTitle)" mdbRippleRadius>Search</a>
@@ -45,7 +45,7 @@
             <li class="list-group-item pb-0">
               <i class="fa fa-file-text-o"></i> {{agenda.Title}}
               <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
-              <i [hidden]="agenda.state != 'active'" (click)="saveToFavorites(agenda)" class="fa mr-2 pointer-cursor fa-pencil float-right purple-text"></i>
+              <i [hidden]="agenda.state != 'active'" mdbTooltip="Save to favorites" placement="top" (click)="saveToFavorites(agenda)" class="fa mr-2 pointer-cursor fa-pencil float-right purple-text"></i>
               <div class="chip float-right">
                   <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> {{favoriteAgenda.Agenda.User.FirstName}} {{favoriteAgenda.Agenda.User.LastName}}
               </div>

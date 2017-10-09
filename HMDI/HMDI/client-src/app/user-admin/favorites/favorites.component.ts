@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FavoriteAgenda } from './favorite-agenda.model';
 import { FavoritesService } from './favorites.service';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { Checklist } from '../planner/checklist.model';
+import { ChecklistItem } from '../planner/checklist-item.model';
+import { ModalsService } from '../modals.service';
 
 @Component({
   selector: 'app-favorites',
@@ -25,7 +28,7 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 export class FavoritesComponent implements OnInit {
   favorites: FavoriteAgenda[] = [];
   grade: number = 1;
-  constructor(private favoriteService: FavoritesService) { }
+  constructor(private modalService: ModalsService, private favoriteService: FavoritesService) { }
 
   ngOnInit() {
     this.favoriteService.getFavorites().subscribe(val => {
@@ -42,7 +45,24 @@ export class FavoritesComponent implements OnInit {
   }
 
   removeFromFavorites(favoriteAgenda){
+    
+  }
 
+  convertToChecklist(favoriteAgenda){
+    let checklist = new Checklist();
+    checklist.state = "inactive";
+    checklist.Title = favoriteAgenda.Agenda.Title;
+    checklist.IsFinished = false;
+    checklist.Items = new Array<ChecklistItem>();
+    favoriteAgenda.Agenda.Items.forEach(element => {
+      let checklistItem = new ChecklistItem();
+      checklistItem.IsChecked = false;
+      checklistItem.Todo = element.Todo;
+      checklist.Items.push(checklistItem);
+    });
+
+    let data = { task: checklist, planner: '' };
+    this.modalService.openChecklistModal(data);
   }
 
   rate(favoriteAgenda){
