@@ -1,16 +1,12 @@
 # HmdiApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.2.7.
+Help-out is an application that enables people to better organize their everyday tasks. It is the only application you will need to organize and increase your productivity. Helpout allows the opportunity for its community to push you the advice and motivation you need before you have to search for a solution on how to better deliver your agendas.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `wwwroot/` directory. Use the `-prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `wwwroot/` directory.
 
