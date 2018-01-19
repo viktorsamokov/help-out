@@ -1,5 +1,6 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { RegisterComponent } from "../register/register.component";
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
   templateUrl: './welcome.component.html',
@@ -8,7 +9,8 @@ import { RegisterComponent } from "../register/register.component";
 export class WelcomeComponent implements OnInit {
   @ViewChild('registerModal') public registerModal: RegisterComponent;
   
-  constructor() { }
+  constructor() {
+   }
 
   ngOnInit() {
   }

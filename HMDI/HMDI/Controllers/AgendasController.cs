@@ -84,6 +84,21 @@ namespace HMDI.Controllers
       return Ok(agendaDto);
     }
 
+    // POST api/agendas
+    [HttpPost]
+    [Route("remove/favorite")]
+    public IActionResult RemoveFavoriteAgenda([FromBody]FavoriteAgenda entity)
+    {
+      var user = _userManager.GetUserId(this.User);
+
+      entity.UserId = user;
+
+      FavoriteAgenda agenda = _agendaService.RemoveFavorite(entity, user);
+      FavoriteAgendaDto agendaDto = _mapper.Map<FavoriteAgendaDto>(agenda);
+
+      return Ok(agendaDto);
+    }
+
     // POST api/agendas/searchbytags
     [HttpPost]
     [Route("searchbytags")]
@@ -96,7 +111,7 @@ namespace HMDI.Controllers
         return Ok(agendas);
       }
 
-       var userId = _userManager.GetUserId(this.User);
+      var userId = _userManager.GetUserId(this.User);
 
       agendas = _agendaService.SearchAgendasByTags(tags, userId);
 
@@ -127,7 +142,7 @@ namespace HMDI.Controllers
     public IActionResult RateAgenda([FromBody]FavoriteAgenda entity)
     {
       var userId = _userManager.GetUserId(this.User);
-
+      
       FavoriteAgenda favoriteAgenda = _agendaService.RateAgenda(entity, userId);
 
       if(favoriteAgenda == null)

@@ -76,7 +76,7 @@ namespace HMDI.Controllers
     public IActionResult GetFavoriteAgendas()
     {
       var userId = _user.GetUserId(this.User);
-
+      
       List<FavoriteAgenda> favorites = _userService.GetFavorites(userId);
       List<FavoriteAgendaDto> favoritesDto = _mapper.Map<List<FavoriteAgendaDto>>(favorites);
 

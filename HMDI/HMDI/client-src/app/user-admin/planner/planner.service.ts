@@ -112,9 +112,9 @@ export class PlannerService {
 
   // private helper
   jwt(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    return new RequestOptions({ headers: headers });
-  }
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer '+ user.token });
+    return new RequestOptions({ headers: headers });  }
 
   handleChecklist(resp){
     let today = new Date();

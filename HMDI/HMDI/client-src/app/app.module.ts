@@ -7,6 +7,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoadingModule, ANIMATION_TYPES } from 'ngx-loading';
 import { NgxMyDatePickerModule } from 'ngx-mydatepicker';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {ToastModule} from 'ng2-toastr/ng2-toastr';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -80,7 +81,8 @@ import { MainService } from './main/main.service';
     NgxMyDatePickerModule.forRoot(),
     NgbModule.forRoot(),
     HttpModule,
-    MDBBootstrapModule.forRoot()
+    MDBBootstrapModule.forRoot(),
+    ToastModule.forRoot()
   ],
   bootstrap: [AppComponent],
   schemas: [ NO_ERRORS_SCHEMA ],

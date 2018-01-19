@@ -1,7 +1,8 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { ModalDirective } from "angular-bootstrap-md/modals";
 import { Register } from "./register.model";
 import { RegisterService } from "./register.service";
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   selector: 'app-register',
@@ -18,8 +19,9 @@ export class RegisterComponent implements OnInit {
   public registerVm: Register;
   public loading = false;
 
-  constructor(private registerService: RegisterService) {
+  constructor(private registerService: RegisterService, public toastr: ToastsManager, vcr: ViewContainerRef) {
     this.registerVm = new Register();
+    this.toastr.setRootViewContainerRef(vcr);
    }
 
   ngOnInit() {
@@ -29,6 +31,8 @@ export class RegisterComponent implements OnInit {
     this.loading = true;
     this.registerService.registerUser(this.registerVm).subscribe(event => {
       this.loading = false;
+      this.registerForm.hide();
+      this.toastr.success("You have succesfully registered, now you can log into Helpout", "Success");      
     });
   }
 

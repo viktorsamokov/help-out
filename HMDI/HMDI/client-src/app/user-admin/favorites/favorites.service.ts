@@ -34,6 +34,13 @@ export class FavoritesService {
     });
   }
 
+  removeFavorite(agenda): Observable<FavoriteAgenda>{
+    return this.http.post("/api/agendas/remove/favorite", agenda, this.jwt()).map((response: Response) => {
+      let resp = response.json();
+      return resp;
+    });
+  }
+
   addToFavorites(favorite){
     if(this.favorites){
       this.favorites.push(favorite);
@@ -42,7 +49,8 @@ export class FavoritesService {
 
   // private helper
   private jwt(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer '+ user.token });
     return new RequestOptions({ headers: headers });
   }
 }

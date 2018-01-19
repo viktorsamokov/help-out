@@ -23,7 +23,8 @@ export class TagService {
   
   // private helper
   private jwt(){
-    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let user = JSON.parse(localStorage.getItem('currentUser'));
+    let headers = new Headers({ 'Content-Type': 'application/json', 'Authorization': 'Bearer '+ user.token });
     return new RequestOptions({ headers: headers });
   }
 

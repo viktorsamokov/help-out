@@ -20,6 +20,7 @@ namespace HMDI.Services
     List<Agenda> SearchAgendasByName(string name, string userId);
     FavoriteAgenda SaveToFavorites(Agenda agenda, string userId);
     FavoriteAgenda RateAgenda(FavoriteAgenda favorite, string userId);
+    FavoriteAgenda RemoveFavorite(FavoriteAgenda entity, string user);
   }
 
   public class AgendaService : IAgendaService
@@ -147,6 +148,21 @@ namespace HMDI.Services
       return fav;
     }
 
+    public FavoriteAgenda RemoveFavorite(FavoriteAgenda entity, string user)
+    {
+      Agenda agenda = _db.Agendas.Include(a => a.Favorites).ThenInclude(a => a.Agenda).ThenInclude(a => a.User)
+        .Include(u => u.Favorites).ThenInclude(a => a.Agenda).ThenInclude(a => a.Items)
+        .Include(a => a.Rating).Where(a => a.Id == entity.AgendaId).FirstOrDefault();
+
+      FavoriteAgenda fav = agenda.Favorites.Single(a => a.UserId == user && a.AgendaId == agenda.Id);
+      _db.Entry(fav).State = EntityState.Deleted;
+
+      _db.Update(agenda);
+      _db.SaveChanges();
+
+      return entity;
+    }
+
     public FavoriteAgenda SaveToFavorites(Agenda agenda, string userId)
     {
       ApplicationUser user = _db.Users.Include(u => u.Favorites).Where(u => u.Id == userId).FirstOrDefault();
@@ -180,9 +196,9 @@ namespace HMDI.Services
 
       IEnumerable<Agenda> favoredAgendas = _db.Agendas.Include(a => a.Favorites).Where(a => a.Favorites.Any(af => af.UserId == userId));
 
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User)
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User).Include(a => a.Rating)
         .Where(a => a.UserId != userId && a.IsDeleted == false && a.Status == AgendaStatus.Public && 
-        words.All(w => a.Title.ToLower().Contains(w.ToLower()))).Except(favoredAgendas).OrderByDescending(a => a.Id).Take(15);
+        words.All(w => a.Title.ToLower().Contains(w.ToLower()))).Except(favoredAgendas).OrderByDescending(a => a.Rating.Avg).Take(15);
 
       return agendas.ToList();
     }
@@ -191,10 +207,12 @@ namespace HMDI.Services
     {
       IEnumerable<Agenda> favoredAgendas = _db.Agendas.Include(a => a.Favorites).Where(a => a.Favorites.Any(af => af.UserId == userId));
 
-      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User).
+      IEnumerable<Agenda> agendas = _db.Agendas.Include(a => a.Items).Include(a => a.User).Include(a => a.Rating).
         Where(a => a.UserId != userId && a.IsDeleted == false && a.Status == AgendaStatus.Public 
-        && tags.Any(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower()))).Except(favoredAgendas)
-        .OrderByDescending(a => tags.Count(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower()))).Take(15);
+        && tags.Any(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower())))
+        .Except(favoredAgendas)
+        .OrderByDescending(a => tags.Count(t => a.AgendaTags.Any(at => at.Tag.Name.ToLower() == t.Name.ToLower())))
+        .OrderByDescending(a => a.Rating.Avg).Take(15);
 
       return agendas.ToList();
     }

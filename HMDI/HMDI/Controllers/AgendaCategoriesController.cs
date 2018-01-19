@@ -44,6 +44,11 @@ namespace HMDI.Controllers
     {
       var user = _userManager.GetUserId(this.User);
 
+      if(user == null)
+      {
+        user = "e93083e3-07d5-4f81-9b20-feda14e0fc47";
+      }
+
       IEnumerable<AgendaCategoryDto> agendaCategories = _agendaCategoryService.GetAgendasForUser(user).ToList();
       
       return Ok(agendaCategories);
@@ -72,6 +77,10 @@ namespace HMDI.Controllers
       }
 
       var user = _userManager.GetUserId(this.User);
+      if(user == null)
+      {
+        user = "e93083e3-07d5-4f81-9b20-feda14e0fc47";
+      }
       entity.UserId = user;
 
       AgendaCategory agendaCategory = _agendaCategoryService.Create(entity);

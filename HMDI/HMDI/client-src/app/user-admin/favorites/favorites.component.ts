@@ -28,6 +28,7 @@ import { ModalsService } from '../modals.service';
 export class FavoritesComponent implements OnInit {
   favorites: FavoriteAgenda[] = [];
   grade: number = 1;
+  loading = false;
   constructor(private modalService: ModalsService, private favoriteService: FavoritesService) { }
 
   ngOnInit() {
@@ -45,7 +46,18 @@ export class FavoritesComponent implements OnInit {
   }
 
   removeFromFavorites(favoriteAgenda){
-    
+    this.loading = true;
+    this.favoriteService.removeFavorite(favoriteAgenda).subscribe(agenda => {
+      this.loading = false;
+      console.log(agenda);
+      for (var index = 0; index < this.favorites.length; index++) {
+        var element = this.favorites[index];
+        if(element.AgendaId == favoriteAgenda.AgendaId && element.UserId == favoriteAgenda.UserId){
+          this.favorites.splice(index, 1);
+        }
+      }
+      console.log(this.favorites);
+    });
   }
 
   convertToChecklist(favoriteAgenda){
@@ -67,7 +79,9 @@ export class FavoritesComponent implements OnInit {
 
   rate(favoriteAgenda){
     console.log(favoriteAgenda);
+    this.loading = true;
     this.favoriteService.rateAgenda(favoriteAgenda).subscribe(val => {
+      this.loading = false;
       favoriteAgenda.HasRated = true;
     });
   }

@@ -26,6 +26,7 @@ import { ModalsService } from '../../modals.service';
 export class ActiveComponent implements OnInit {
   public tasks: Checklist[] = [];
   public today = new Date();
+  public loading = false;
 
   constructor(private plannerService: PlannerService, private modalService: ModalsService) {  }
 
@@ -51,7 +52,9 @@ export class ActiveComponent implements OnInit {
     let isLastChecked = task.Items.find(el => el.IsChecked == false);
     if(!isLastChecked){
       task.IsFinished = true;
+      this.loading = true;
       this.plannerService.updateChecklist(task).subscribe(val => {
+        this.loading = false;
         this.tasks.splice(taskIndex, 1);
       });
     }

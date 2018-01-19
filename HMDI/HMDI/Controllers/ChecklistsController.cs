@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using AutoMapper;
 using HMDI.Dtos;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -58,6 +59,11 @@ namespace HMDI.Controllers
     public IActionResult GetDailyChecklists()
     {
       var user = _userManager.GetUserId(this.User);
+
+      if(user == null)
+      {
+        user = "e93083e3-07d5-4f81-9b20-feda14e0fc47";
+      }
 
       IEnumerable<Checklist> checklists = _service.GetDailyChecklists(user);
       IEnumerable<ChecklistDto> checklistsDto = _mapper.Map<IEnumerable<ChecklistDto>>(checklists);
@@ -114,7 +120,7 @@ namespace HMDI.Controllers
       }
 
       var user = _userManager.GetUserId(this.User);
-
+      
       entity.UserId = user;
 
       Checklist checklist = _service.Create(entity);

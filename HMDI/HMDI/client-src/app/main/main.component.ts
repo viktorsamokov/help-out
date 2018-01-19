@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { MainService } from './main.service';
 import { AgendaTag } from '../shared/agenda-tag.model';
 import { Tag } from '../shared/tag.model';
@@ -7,6 +7,7 @@ import { TagService } from '../shared/tag.service';
 import { Agenda } from '../user-admin/agendas/category-agendas/category-agenda.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
 import { FavoritesService } from '../user-admin/favorites/favorites.service';
+import { ToastsManager } from 'ng2-toastr';
 
 @Component({
   templateUrl: './main.component.html',
@@ -30,11 +31,15 @@ export class MainComponent implements OnInit {
   public searchByTag: boolean = true;
   public agendaTitle: any;
   public tags: Array<Tag> = [];
-  public agendas: Array<Agenda> = [];
+  public agendas: Array<Agenda>;
   public model: any;
+  public loading = false;
   formatMatches = (value: any) => value.Name || '';
 
-  constructor(private mainService: MainService, private favoriteService: FavoritesService, private tagService: TagService) { }
+  constructor(private mainService: MainService, private favoriteService: FavoritesService, 
+    private tagService: TagService,  public toastr: ToastsManager, vcr: ViewContainerRef) {
+      this.toastr.setRootViewContainerRef(vcr);      
+     }
 
   ngOnInit() {
   }
@@ -67,12 +72,16 @@ export class MainComponent implements OnInit {
   }
 
   searchByTags(){
+    this.loading = true;
     this.mainService.searchByTags(this.tags).subscribe(agendas => {
+      if(!this.agendas){
+        this.agendas = new Array<Agenda>();
+      }
       agendas.forEach(val => {
         val.state = "inactive";
       });
       console.log(agendas);
-      
+      this.loading = false;
       this.agendas = agendas;
     })
   }
@@ -89,18 +98,31 @@ export class MainComponent implements OnInit {
     if(agendaTitle.length < 1){
       return;
     }
+    this.loading = true;
     this.mainService.searchByName(agendaTitle).subscribe(agendas => {
+      if(!this.agendas){
+        this.agendas = new Array<Agenda>();
+      }
       agendas.forEach(val => {
         val.state = "inactive";
       });
-      
+      this.loading = false;
       this.agendas = agendas;
     })
   }
 
   saveToFavorites(agenda){
+    this.loading = true;
     this.mainService.addToFavorites(agenda).subscribe(val => {
       this.favoriteService.addToFavorites(val);
+      this.loading = false;
+      this.toastr.success("You have added " + agenda.Title + " to favorites", "Success");      
+      for (var index = 0; index < this.agendas.length; index++) {
+        var element = this.agendas[index];
+        if(element.Id == agenda.Id){
+          this.agendas.splice(index, 1);
+        }
+      }
     });
   }
 }

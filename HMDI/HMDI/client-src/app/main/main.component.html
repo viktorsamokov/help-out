@@ -1,3 +1,4 @@
+<ngx-loading [show]="loading" [config]=""></ngx-loading>
 <div class="container main-height container-block mt-3">
   <div class="row position-relative h-100">
     <div class="col-md-4 br-1">
@@ -20,9 +21,11 @@
 
         <br>
 
-        <div class="chip" *ngFor="let tag of tags; let i = index">
-          {{tag.Name}}
-          <i class="close-chip fa fa-times" (click)="removeTag(tag, i)"></i>
+        <div class="w-100">
+            <div class="chip" *ngFor="let tag of tags; let i = index">
+                {{tag.Name}}
+                <i class="close-chip fa fa-times" (click)="removeTag(tag, i)"></i>
+              </div>
         </div>
 
         <div class="w-100 text-right">
@@ -41,13 +44,16 @@
     <div class="col-md-8 overflow-auto">
       <div class="row mt-4">
         <div class="col-md-12">
+            <blockquote *ngIf="agendas && agendas.length < 1" class="blockquote mt-5 text-center">
+                <p class="mb-0">No results were found.</p>
+            </blockquote>
           <ul *ngFor="let agenda of agendas; let i = index" class="list-group mb-1">
             <li class="list-group-item pb-0">
               <i class="fa fa-file-text-o"></i> {{agenda.Title}}
               <i class="fa fa-angle-down f-20 float-right pointer-cursor" (click)="toggleAgenda(agenda)"></i>
-              <i [hidden]="agenda.state != 'active'" mdbTooltip="Save to favorites" placement="top" (click)="saveToFavorites(agenda)" class="fa mr-2 pointer-cursor fa-pencil float-right purple-text"></i>
+              <i [hidden]="agenda.state != 'active'" (click)="saveToFavorites(agenda)" class="fa mr-2 pointer-cursor fa-star float-right purple-text"></i>
               <div class="chip float-right">
-                  <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-6.jpg" alt="Contact Person"> {{favoriteAgenda.Agenda.User.FirstName}} {{favoriteAgenda.Agenda.User.LastName}}
+                  by {{agenda.User.FirstName}} {{agenda.User.LastName}}
               </div>
               <div [@animateHeight]="agenda.state">
                 <hr />

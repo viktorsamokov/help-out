@@ -7,11 +7,13 @@ using HMDI.Services;
 using HMDI.Entities;
 using Microsoft.EntityFrameworkCore;
 using HMDI.Helpers;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace HMDI.Controllers
 {
+  [Authorize]
   [Route("api/[controller]")]
   public class RatingsController : Controller
   {
